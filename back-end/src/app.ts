@@ -2,6 +2,8 @@ import express, { Express } from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import { AddressInfo } from "net";
+import "reflect-metadata";
+import { openConnection } from "./database/database";
 
 dotenv.config();
 
@@ -10,6 +12,7 @@ export const app: Express = express();
 app.use(express.json());
 app.use(cors());
 
+openConnection()
 
 const server = app.listen(process.env.API_PORT || 3000, () => {
   if (server) {

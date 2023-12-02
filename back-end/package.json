@@ -7,7 +7,10 @@
     "dev": "nodemon -L --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node build/index.js",
-    "test": "npm run test"
+    "test": "npm run test",
+    "typeorm:run": "npx typeorm migration:run -d build/database/database.js",
+    "typeorm:revert": "npx typeorm migration:revert -d build/database/database.js",
+    "typeorm:create": "npx typeorm migration:create"
   },
   "author": "adeir moreira",
   "license": "ISC",
@@ -22,6 +25,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "mysql2": "^3.6.5",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1",
     "typeorm": "^0.3.17"
