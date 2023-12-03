@@ -1,0 +1,27 @@
+GET http://localhost:3000/brokers
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json 
+
+{
+    "name": "Darmstadio",
+    "email": "Darmstadio@email.com",
+    "password": "senhadodan",
+    "role": "Broker"
+}
+
+###
+PATCH  http://localhost:3000/users/17
+Content-Type: application/json 
+
+{
+    "name": "Da",
+    "emaill": "Darmstadio@email.com",
+    "password": "senhadodan"
+
+}
+
+###
+DELETE  http://localhost:3000/users/17
+

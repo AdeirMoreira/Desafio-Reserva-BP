@@ -2,6 +2,9 @@ import { DataSource } from "typeorm";
 import { CustonException } from "../middleware/error/custonErrors.error";
 import { STATUS_CODE } from "../constants/statusCodes.constant";
 import { ERROR_MESSAGES } from "../constants/errorMessages.constant";
+import { CreateTableUsers1701530727848 } from "./migration/1701530727848-create-table-users";
+
+import { User } from "../modules/users/entity/user.entity";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -10,6 +13,9 @@ export const AppDataSource = new DataSource({
   username: "admin",
   password: "full-stack",
   database: "BP",
+  entities: [User],
+  migrations: [CreateTableUsers1701530727848],
+  migrationsRun: false,
 });
 
 export function openConnection() {

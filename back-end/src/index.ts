@@ -1,7 +1,7 @@
 import { app } from "./app";
 import { errorMiddleware } from "./middleware/error/error.middleware";
-import brokersRoutes from "./modules/brokers/routes/brokers.routes";
+import usersRoutes from "./modules/users/routes/users.routes";
 
-app.use('/brokers', brokersRoutes)
+app.use("/users", usersRoutes);
 
-app.use(errorMiddleware)
+app.use(errorMiddleware);
