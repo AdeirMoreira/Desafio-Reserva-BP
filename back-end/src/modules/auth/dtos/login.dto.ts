@@ -2,11 +2,7 @@ import { IsString, IsEmail, IsNotEmpty, Length, IsIn } from "class-validator";
 import { ErrorObject, validateDTO } from "../../utils/validator";
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
 
-export class CreateUserDTO {
-  @IsNotEmpty({ message: "O Nome do corretor é obrigatorio." })
-  @IsString({ message: "O nome do corretor deve ser uma string" })
-  name: string;
-
+export class LoginDTO {
   @IsEmail({}, { message: "Email inválido." })
   email: string;
 
@@ -17,19 +13,12 @@ export class CreateUserDTO {
   })
   password: string;
 
-  @IsIn(["Broker", "Costumer"], {
-    message: "O tipo do usuário deve ser 'Broker' ou 'Costumer'",
-  })
-  role: string;
-
-  constructor(data: CreateUserDTO) {
-    this.name = data.name;
+  constructor(data: LoginDTO) {
     this.email = data.email;
     this.password = data.password;
-    this.role = data.role
   }
 
-  static async validate(data: unknown): Promise<CreateUserDTO> {
+  static async validate(data: unknown): Promise<LoginDTO> {
     const dto = new this(data as any);
 
     const { validated, errors } = await validateDTO(dto);

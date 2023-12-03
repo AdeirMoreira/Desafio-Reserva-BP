@@ -9,15 +9,20 @@ import {
   NotFoundException,
 } from "../../../middleware/error/custonErrors.error";
 import { USER_ROLE, } from "../../../constants/index.constant";
+import { IHashService } from "../../auth/services/hash.service";
+import { CreatedUser } from "../../utils/types";
 
 export class UsersService implements IUsersService {
-  constructor(private readonly userRepository: Repository<User>) {}
+  constructor(
+    private readonly userRepository: Repository<User>,
+    private readonly hashService: IHashService,
+    ) {}
 
   getBrokers() {
     return this.userRepository.findBy({ role: USER_ROLE.BROKER });
   }
 
-  async find(idUser: number) {
+  async findBy(idUser: number) {
     return this.userRepository.findOneBy({ idUser });
   }
 
@@ -25,7 +30,7 @@ export class UsersService implements IUsersService {
     return this.userRepository.findOneBy({ email });
   }
 
-  async createUser(createUserDTO: CreateUserDTO): Promise<User> {
+  async createUser(createUserDTO: CreateUserDTO): Promise<CreatedUser> {
     const user = await this.userRepository.exist({
       where: { email: createUserDTO.email },
     });
@@ -37,7 +42,17 @@ export class UsersService implements IUsersService {
       );
     }
 
-    return this.userRepository.save(createUserDTO);
+    const hashPassword = this.hashService.hash(createUserDTO.password);
+    createUserDTO.password = hashPassword;
+
+    const newUser = await this.userRepository.save(createUserDTO);
+
+    return {
+      idUser: newUser.idUser,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role
+    }
   }
 
   async updateUser(idUserDTO: IdUserDTO, updateUserDTO: UpdateUserDTO) {

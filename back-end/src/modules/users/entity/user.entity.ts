@@ -6,7 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { UserRoleEnum } from "../../../constants/index.constant";
+import { UserRoleEnum } from "../../utils/types";
+
 
 @Entity({name: 'Users'})
 export class User {

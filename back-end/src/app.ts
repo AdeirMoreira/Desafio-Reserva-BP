@@ -1,11 +1,10 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import express, { Express } from "express";
 import cors from "cors";
-import * as dotenv from "dotenv";
 import { AddressInfo } from "net";
-import "reflect-metadata";
 import { openConnection } from "./database/database";
-
-dotenv.config();
 
 export const app: Express = express();
 
@@ -14,7 +13,7 @@ app.use(cors());
 
 openConnection()
 
-const server = app.listen(process.env.API_PORT || 3000, () => {
+const server = app.listen(process.env.API_PORT || 3003, () => {
   if (server) {
     const address = server.address() as AddressInfo;
     console.log(`Server is running in http://localhost:${address.port}`);
