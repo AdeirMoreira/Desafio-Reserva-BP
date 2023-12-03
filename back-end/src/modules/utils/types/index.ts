@@ -20,3 +20,9 @@ export type TokenObject = {
 };
 
 export type CreatedUser = Pick<User, "idUser" | "name" | "email" | "role">;
+
+export type ExtractedTokenPayload = {
+  payload: TokenPayload;
+  iat: number;
+  exp: number;
+};

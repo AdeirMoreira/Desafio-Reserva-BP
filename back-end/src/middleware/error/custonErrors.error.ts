@@ -42,9 +42,9 @@ export class CustonException implements AllExceptions {
 }
 
 export class InternalServerErrorException extends CustonException {
-  constructor(error?: Error) {
+  constructor(message?: string, error?: Error) {
     super(
-      ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+      message ?? ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
       STATUS_CODE.INTERNAL_SERVER_ERROR,
       error
     );
@@ -52,16 +52,20 @@ export class InternalServerErrorException extends CustonException {
 }
 
 export class NotFoundException extends CustonException {
-  constructor(error?: Error) {
-    super(ERROR_MESSAGES.DATA_NOT_FOUND, STATUS_CODE.NOT_FOUND, error);
+  constructor(message?: string, error?: Error) {
+    super(
+      message ?? ERROR_MESSAGES.DATA_NOT_FOUND,
+      STATUS_CODE.NOT_FOUND,
+      error
+    );
     this.name = this.constructor.name;
   }
 }
 
 export class NotAcceptableException extends CustonException {
-  constructor(error?: Error) {
+  constructor(message?: string, error?: Error) {
     super(
-      ERROR_MESSAGES.DATA_VALIDATION_FAILURE,
+      message ?? ERROR_MESSAGES.DATA_VALIDATION_FAILURE,
       STATUS_CODE.NOT_ACCEPTABLE,
       error
     );
@@ -70,8 +74,12 @@ export class NotAcceptableException extends CustonException {
 }
 
 export class UnauthorizedException extends CustonException {
-  constructor(error?: Error) {
-    super(ERROR_MESSAGES.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED, error);
+  constructor(message?: string, error?: Error) {
+    super(
+      message ?? ERROR_MESSAGES.UNAUTHORIZED,
+      STATUS_CODE.UNAUTHORIZED,
+      error
+    );
     this.name = this.constructor.name;
   }
 }

@@ -10,7 +10,7 @@ function authFactory() {
   const authService = new AuthService(usersService, hashService, tokenService);
   const authController = new AuthController(authService);
 
-  return { authController };
+  return { authController, hashService, tokenService };
 }
 
-export const { authController } = authFactory();
+export const { authController, hashService, tokenService } = authFactory();

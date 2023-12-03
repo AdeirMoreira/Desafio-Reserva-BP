@@ -22,9 +22,7 @@ export const errorMiddleware = (
   
   const customException = error instanceof CustonException;
   if (!customException) {
-    console.log('INTERNAL', error);
-    
-    error = new InternalServerErrorException(error);
+    error = new InternalServerErrorException(undefined,error);
   }
   
   new ErrorHandler(error).catchError(res);

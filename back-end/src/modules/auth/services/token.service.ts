@@ -1,18 +1,18 @@
-import * as jwt from "jsonwebtoken";
-import { TokenPayload } from "../../utils/types";
+import { JwtPayload, sign, Secret, verify } from "jsonwebtoken";
+import { ExtractedTokenPayload, TokenPayload } from "../../utils/types";
 
 export interface ITokenService {
   generateToken(payload: TokenPayload): string;
-  validateToken(token: string): string;
+  validateToken(token: string): ExtractedTokenPayload
 }
 
 export class TokenService implements ITokenService {
   generateToken = (payload: TokenPayload): string => {
-    const token = jwt.sign(
+    const token = sign(
       {
-        payload,
+       payload,
       },
-      process.env.JWT_KEY as jwt.Secret,
+      process.env.JWT_KEY as Secret,
       {
         expiresIn: process.env.EXPIRESIN,
       }
@@ -20,7 +20,7 @@ export class TokenService implements ITokenService {
     return token;
   };
 
-  validateToken = (token: string): string => {
-    return jwt.verify(token, process.env.JWT_KEY as jwt.Secret) as any;
+  validateToken = (token: string): ExtractedTokenPayload => {
+    return verify(token, process.env.JWT_KEY as Secret) as ExtractedTokenPayload
   };
 }
