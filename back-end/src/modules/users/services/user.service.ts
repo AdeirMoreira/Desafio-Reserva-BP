@@ -1,29 +1,32 @@
 import { Repository } from "typeorm";
 import { CreateUserDTO } from "../dtos/createUser.dto";
 import { User } from "../entity/user.entity";
-import { IUsersService } from "./users.service.interface";
+import { IUserService } from "./user.service.interface";
 import { IdUserDTO } from "../dtos/idUser.dto";
 import { UpdateUserDTO } from "../dtos/updateUser.dto";
 import {
   CustonException,
   NotFoundException,
 } from "../../../middleware/error/custonErrors.error";
-import { USER_ROLE, } from "../../../constants/index.constant";
+import { USER_ROLE } from "../../../constants/index.constant";
 import { IHashService } from "../../auth/services/hash.service";
-import { CreatedUser } from "../../utils/types";
+import { CreatedUser, OptionalUser } from "../../utils/types";
 
-export class UsersService implements IUsersService {
+export class UserService implements IUserService {
   constructor(
     private readonly userRepository: Repository<User>,
-    private readonly hashService: IHashService,
-    ) {}
+    private readonly hashService: IHashService
+  ) {}
 
   getBrokers() {
     return this.userRepository.findBy({ role: USER_ROLE.BROKER });
   }
 
-  async findBy(idUser: number) {
-    return this.userRepository.findOneBy({ idUser });
+  async findBy(optionalUser: OptionalUser) {
+    return this.userRepository.findOne({
+      where: optionalUser,
+      relations: { meetings: true },
+    });
   }
 
   async findByEmail(email: string) {
@@ -37,7 +40,7 @@ export class UsersService implements IUsersService {
 
     if (user) {
       throw new CustonException(
-        `Email ${createUserDTO.email} já cadastrado.`,
+        `The email ${createUserDTO.email} is already registered.`,
         400
       );
     }
@@ -51,8 +54,8 @@ export class UsersService implements IUsersService {
       idUser: newUser.idUser,
       name: newUser.name,
       email: newUser.email,
-      role: newUser.role
-    }
+      role: newUser.role,
+    };
   }
 
   async updateUser(idUserDTO: IdUserDTO, updateUserDTO: UpdateUserDTO) {
@@ -61,6 +64,11 @@ export class UsersService implements IUsersService {
 
     if (!user) {
       throw new NotFoundException();
+    }
+
+    if (updateUserDTO.password) {
+      const hashPassword = this.hashService.hash(updateUserDTO.password);
+      updateUserDTO.password = hashPassword;
     }
 
     return this.userRepository.update(idUser, updateUserDTO);

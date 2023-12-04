@@ -1,4 +1,4 @@
-import { validate, ValidationError } from "class-validator";
+import { validate, ValidationError, ValidatorOptions } from "class-validator";
 
 export interface ErrorObject {
   [key: string]: string[];
@@ -9,8 +9,19 @@ interface ValidationResult {
   errors: ErrorObject | null;
 }
 
+const validatorOptions: ValidatorOptions = {
+  enableDebugMessages: true,
+  whitelist: true,
+  forbidNonWhitelisted: true,
+  always: true,
+  dismissDefaultMessages: true,
+};
+
 export const validateDTO = async (dto: object): Promise<ValidationResult> => {
-  const errors: ValidationError[] = await validate(dto as object);
+  const errors: ValidationError[] = await validate(
+    dto as object,
+    validatorOptions
+  );
 
   if (errors.length > 0) {
     return {

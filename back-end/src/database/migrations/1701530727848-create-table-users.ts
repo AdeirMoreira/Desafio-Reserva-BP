@@ -37,6 +37,7 @@ export class CreateTableUsers1701530727848 implements MigrationInterface {
             name: "role",
             type: "enum",
             enum: ["Broker", "Costumer"],
+            isNullable: false,
           },
           {
             name: "createdAt",

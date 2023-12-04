@@ -4,19 +4,19 @@ import { ValidationException } from "../../../middleware/error/custonErrors.erro
 
 export class UpdateUserDTO {
   @IsOptional()
-  @IsString({ message: "O nome do corretor deve ser uma string" })
-  name?: string;
+  @IsString({ message: "The name of the user must be a string." })
+  name: string;
 
   @IsOptional()
-  @IsEmail({}, { message: "Email inválido." })
-  email?: string;
+  @IsEmail({}, { message: "Invalid email." })
+  email: string;
 
   @IsOptional()
-  @IsString({ message: "A senha deve ser uma string." })
+  @IsString({ message: "The password muste be a string." })
   @Length(8, undefined, {
-    message: "A senha deve conter pelo menos 8 caracteres.",
+    message: "The password must contain at least 8 characters.",
   })
-  password?: string;
+  password: string;
 
 
   constructor(data: UpdateUserDTO) {

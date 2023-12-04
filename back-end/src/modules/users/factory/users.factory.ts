@@ -1,16 +1,15 @@
 import { AppDataSource } from "../../../database/database";
 import { HashService } from "../../auth/services/hash.service";
-import { UsersController } from "../controllers/users.controller";
+import { UserController } from "../controllers/user.controller";
 import { User } from "../entity/user.entity";
-import { UsersService } from "../services/users.service";
+import { UserService } from "../services/user.service";
 
-function usersFactory() {
-  const userRepository = AppDataSource.getRepository(User)
-  const hashService = new HashService()
-  const usersService = new UsersService(userRepository, hashService);
-  const usersController = new UsersController(usersService);
+function userFactory() {
+  const userRepository = AppDataSource.getRepository(User);
+  const hashService = new HashService();
+  const userService = new UserService(userRepository, hashService);
+  const userController = new UserController(userService);
 
-  return { usersController, usersService };
+  return { userController, userService };
 }
-
-export const { usersController, usersService } = usersFactory();
+export const { userController, userService } = userFactory();

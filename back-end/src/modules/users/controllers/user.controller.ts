@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { IUsersService } from "../services/users.service.interface";
-import { IUsersController } from "./users.controller.interface";
+import { IUserService } from "../services/user.service.interface";
+import { IUsersController } from "./user.controller.interface";
 import { CreateUserDTO } from "../dtos/createUser.dto";
 import { STATUS_CODE } from "../../../constants/statusCodes.constant";
 import { IdUserDTO } from "../dtos/idUser.dto";
 import { UpdateUserDTO } from "../dtos/updateUser.dto";
 
-export class UsersController implements IUsersController {
-  constructor(private readonly userService: IUsersService) {}
+export class UserController implements IUsersController {
+  constructor(private readonly userService: IUserService) {}
   getBrokers = async (
     req: Request,
     res: Response,
@@ -44,11 +44,10 @@ export class UsersController implements IUsersController {
   ): Promise<void> => {
     try {
       const params = req.params;
-      const body = req.body
-
+      const body = req.body;
 
       const idUser = await IdUserDTO.validate(params);
-      const updateUserDTO = await UpdateUserDTO.validate(body)
+      const updateUserDTO = await UpdateUserDTO.validate(body);
 
       const result = await this.userService.updateUser(idUser, updateUserDTO);
 
@@ -65,7 +64,7 @@ export class UsersController implements IUsersController {
   ): Promise<void> => {
     try {
       const params = req.params;
-
+      
       const idUser = await IdUserDTO.validate(params);
 
       const result = await this.userService.deleteUser(idUser);

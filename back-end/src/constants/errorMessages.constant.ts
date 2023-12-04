@@ -4,5 +4,6 @@ export const ERROR_MESSAGES = {
   DATA_NOT_FOUND: "Data not found.",
   UNAUTHORIZED: "Unauthorized.",
   DATABASE_START_FAILURE: "Error when starting database connection.",
-  INVALID_TOKEN: "Invalid access token."
+  INVALID_TOKEN: "Invalid access token.",
+  INVALID_CREDENTIALS: "Incorrect email or password."
 };

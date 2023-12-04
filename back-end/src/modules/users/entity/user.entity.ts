@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { UserRoleEnum } from "../../utils/types";
+import { Meeting } from "../../meetings/entity/meeting.entity";
 
 
 @Entity({name: 'Users'})
@@ -28,6 +30,9 @@ export class User {
     enum: UserRoleEnum,
   })
   role!: string;
+
+  @OneToMany(()=> Meeting, (meeting) => meeting.idBroker)
+  meetings!:Meeting[]
 
   @CreateDateColumn()
   createdAt!: string;

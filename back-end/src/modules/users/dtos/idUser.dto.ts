@@ -3,8 +3,8 @@ import { ErrorObject, validateDTO } from "../../utils/validator";
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
 
 export class IdUserDTO {
-  @IsNumber({ allowNaN: false }, { message: "Id do usuario inválido." })
-  @Min(1, { message: "Id do usuario dever ser maior que 0." })
+  @IsNumber({ allowNaN: false }, { message: "Invalid user ID." })
+  @Min(1, { message: "User ID must be greater than 0." })
   idUser: number;
 
   constructor(data: IdUserDTO) {

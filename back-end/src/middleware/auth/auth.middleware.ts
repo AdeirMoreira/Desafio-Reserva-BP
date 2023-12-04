@@ -8,7 +8,7 @@ function extractTokenFromHeader(request: Request): string | undefined {
   return type === "Bearer" ? token : undefined;
 }
 
-export const authMiddleware = (userRole: string) => {
+export const authMiddleware = (userRole?: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = extractTokenFromHeader(req);
@@ -20,7 +20,7 @@ export const authMiddleware = (userRole: string) => {
         payload: { role },
       } = tokenService.validateToken(token);
 
-      if (role !== userRole) {
+      if (userRole &&  userRole !== role) {
         throw new UnauthorizedException();
       }
 

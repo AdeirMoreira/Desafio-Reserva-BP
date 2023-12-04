@@ -3,22 +3,22 @@ import { ErrorObject, validateDTO } from "../../utils/validator";
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
 
 export class CreateUserDTO {
-  @IsNotEmpty({ message: "O Nome do corretor é obrigatorio." })
-  @IsString({ message: "O nome do corretor deve ser uma string" })
+  @IsNotEmpty({message: 'The name of the user is required.'})
+  @IsString({ message: "The name of the user must be a string." })
   name: string;
 
-  @IsEmail({}, { message: "Email inválido." })
+  @IsEmail({}, { message: "Invalid email." })
   email: string;
 
-  @IsNotEmpty({ message: "A senha é obrigatoria." })
-  @IsString({ message: "A senha deve ser uma string." })
+  @IsNotEmpty({ message: "The password is required." })
+  @IsString({ message: "The password muste be a string." })
   @Length(8, undefined, {
-    message: "A senha deve conter pelo menos 8 caracteres.",
+    message: "The password must contain at least 8 characters.",
   })
   password: string;
 
   @IsIn(["Broker", "Costumer"], {
-    message: "O tipo do usuário deve ser 'Broker' ou 'Costumer'",
+    message: "User role must be 'Broker' or 'Customer.'",
   })
   role: string;
 
@@ -41,3 +41,5 @@ export class CreateUserDTO {
     return dto;
   }
 }
+
+

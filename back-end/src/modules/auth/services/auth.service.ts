@@ -1,5 +1,6 @@
+import { ERROR_MESSAGES } from "../../../constants/errorMessages.constant";
 import { UnauthorizedException } from "../../../middleware/error/custonErrors.error";
-import { IUsersService } from "../../users/services/users.service.interface";
+import { IUserService } from "../../users/services/user.service.interface";
 import { TokenObject, TokenPayload, UserRoleType } from "../../utils/types";
 import { LoginDTO } from "../dtos/login.dto";
 import { IAuthService } from "./auth.service.interface";
@@ -8,21 +9,20 @@ import { ITokenService } from "./token.service";
 
 export class AuthService implements IAuthService {
   constructor(
-    private readonly userService: IUsersService,
+    private readonly userService: IUserService,
     private readonly hashService: IHashService,
     private readonly tokenService: ITokenService
   ) {}
-  async login(loginDTO: LoginDTO) {
-    const { email, password } = loginDTO;
+  async login({ email, password }: LoginDTO) {
     const user = await this.userService.findByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
     const correctPassword = this.hashService.compare(password, user.password);
     if (!correctPassword) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
     const payload: TokenPayload = {

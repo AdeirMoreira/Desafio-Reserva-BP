@@ -5,35 +5,64 @@ Content-Type: application/json
 
 {
     "email": "Darmstadio@email.com",
-    "password": "senhadodan"
+    "password": "senhadodam"
 }
 
 ###
 @accessToken = Bearer {{login.response.body.accessToken}}
 
 ### SignIn
-POST http://localhost:3003/users
+POST http://localhost:3003/user
 Content-Type: application/json 
 
 {
-    "name": "Darmstadio",
-    "email": "Darmstadio@email.com",
-    "password": "senhadodan",
+    "name": "teste",
+    "email": "teste@email.com",
+    "password": "senhadoteste",
     "role": "Broker"
 }
 
 ### Update User
-PATCH  http://localhost:3003/users/17
+PATCH  http://localhost:3003/user/3
 Authorization: {{accessToken}}
 Content-Type: application/json 
 
 {
-    "name": "Da",
-    "emaill": "Darmstadio@email.com",
-    "password": "senhadodan"
+    "name": "Adeir",
+    "emaill": "adeir@email.com",
+    "password": "senhadoadeir"
 
 }
 
 ### Delete User
-DELETE  http://localhost:3003/users/17
+DELETE  http://localhost:3003/user/17
+
+
+######################################################################################################
+
+### Create Meeting
+POST http://localhost:3003/meeting
+Content-Type: application/json 
+
+{
+    "idBroker": 3,
+    "idCostumer": 2,
+    "startAt": "2023-12-03T20:45:12",
+    "endAt": "2023-12-03T21:45:12"
+}
+
+### Update Meeting
+PATCH  http://localhost:3003/meeting/1
+Authorization: {{accessToken}}
+Content-Type: application/json 
+
+{
+    "idBroker": 1,
+    "idCostumer": 2,
+    "startAt": "2023-12-03T17:45:12",
+    "endAt": "2023-12-03T19:45:12"
+}
+
+### Delete User
+DELETE  http://localhost:3003/meeting/17
 
