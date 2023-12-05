@@ -14,6 +14,31 @@ export class UserController implements IUsersController {
     next: NextFunction
   ): Promise<void> => {
     try {
+      const params = req.params;
+
+      const idUserDTO = await IdUserDTO.validate(params);
+
+      const result = await this.userService.getBroker(idUserDTO)
+
+      res.status(STATUS_CODE.CREATED).send(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getCostumers = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const params = req.params;
+
+      const idUserDTO = await IdUserDTO.validate(params);
+
+      const result = await this.userService.getCostumer(idUserDTO)
+
+      res.status(STATUS_CODE.CREATED).send(result);
     } catch (error) {
       next(error);
     }

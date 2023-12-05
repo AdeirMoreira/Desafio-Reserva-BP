@@ -18,14 +18,26 @@ export class UserService implements IUserService {
     private readonly hashService: IHashService
   ) {}
 
-  getBrokers() {
-    return this.userRepository.findBy({ role: USER_ROLE.BROKER });
+  getBroker({idUser}: IdUserDTO) {
+    return this.userRepository.find({
+      select: ["idUser", "email", "name", "role"],
+      where: { idUser, role: USER_ROLE.BROKER },
+      relations: { brokerMeetings: true },
+    });
+  }
+
+  getCostumer({idUser}: IdUserDTO) {
+    return this.userRepository.find({
+      select: ["idUser", "email", "name", "role"],
+      where: { idUser, role: USER_ROLE.COSTUMER },
+      relations: { costumerMeetings: true },
+    });
   }
 
   async findBy(optionalUser: OptionalUser) {
     return this.userRepository.findOne({
       where: optionalUser,
-      relations: { meetings: true },
+      relations: { brokerMeetings: true, costumerMeetings: true },
     });
   }
 

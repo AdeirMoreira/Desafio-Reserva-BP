@@ -5,6 +5,7 @@ import { STATUS_CODE } from "../../../constants/statusCodes.constant";
 import { IdMeetingDTO } from "../dtos/idMeeting.dto";
 import { UpdatedMeetingDTO } from "../dtos/updateMeeting.dto";
 import { IMeetingService } from "../services/meeting.service.interface";
+import { IdUserDTO } from "../../users/dtos/idUser.dto";
 
 export class MeetingController implements IMeentingController {
   constructor(private readonly meetingService: IMeetingService) {}
@@ -31,7 +32,13 @@ export class MeetingController implements IMeentingController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      res.status(STATUS_CODE.CREATED).send();
+      const params = req.params;
+
+      const idUserDTO = await IdUserDTO.validate(params);
+
+      const result = await this.meetingService.getMeetings(idUserDTO)
+      
+      res.status(STATUS_CODE.CREATED).send(result);
     } catch (error) {
       next(error);
     }

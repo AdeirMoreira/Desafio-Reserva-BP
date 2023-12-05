@@ -21,6 +21,7 @@ export class Meeting {
     foreignKeyConstraintName: "Meetings_User_IdBroker_FK",
     referencedColumnName: "idUser",
   })
+  @Column()
   idBroker!: number;
 
   @ManyToOne(() => User, (user) => user.idUser)
@@ -29,6 +30,7 @@ export class Meeting {
     foreignKeyConstraintName: "Meetings_User_IdCostumer_FK",
     referencedColumnName: "idUser",
   })
+  @Column()
   idCostumer!: number;
 
   @Column()

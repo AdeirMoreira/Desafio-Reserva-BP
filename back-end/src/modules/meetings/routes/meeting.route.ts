@@ -3,7 +3,7 @@ import { meetingController } from "../factory/meeting.factory"
 
 const meetingRoutes = express.Router()
 
-meetingRoutes.get('', meetingController.getMeetings)
+meetingRoutes.get('/:idUser', meetingController.getMeetings)
 meetingRoutes.post('', meetingController.createMeeting)
 meetingRoutes.patch('/:idMeeting', meetingController.updateMeeting)
 meetingRoutes.delete('/:idMeeting', meetingController.deleteMeeting)

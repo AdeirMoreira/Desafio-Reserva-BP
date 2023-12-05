@@ -32,7 +32,10 @@ export class User {
   role!: string;
 
   @OneToMany(()=> Meeting, (meeting) => meeting.idBroker)
-  meetings!:Meeting[]
+  brokerMeetings!:Meeting[]
+
+  @OneToMany(()=> Meeting, (meeting) => meeting.idCostumer)
+  costumerMeetings!:Meeting[]
 
   @CreateDateColumn()
   createdAt!: string;

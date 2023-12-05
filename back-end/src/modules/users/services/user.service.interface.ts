@@ -6,7 +6,8 @@ import { User } from "../entity/user.entity";
 import { CreatedUser, OptionalUser } from "../../utils/types";
 
 export interface IUserService {
-  getBrokers(): Promise<User[]>
+  getBroker(optionalUser:IdUserDTO): Promise<User[]>
+  getCostumer(optionalUser: OptionalUser): Promise<User[]>
   findBy(OptionalUser: OptionalUser): Promise<User | null>
   findByEmail(email: string): Promise<User | null>
   createUser(createUserDTO: CreateUserDTO): Promise<CreatedUser>;

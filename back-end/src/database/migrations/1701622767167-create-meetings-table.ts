@@ -16,8 +16,8 @@ export class CreateMeetingsTable1701622767167 implements MigrationInterface {
           },
           { name: "idBroker", type: "int", isNullable: false },
           { name: "idCostumer", type: "int", isNullable: false },
-          { name: "startAt", type: "timestamp", isNullable: false },
-          { name: "endAt", type: "datetime", isNullable: false },
+          { name: "startAt", type: "varchar", isNullable: false },
+          { name: "endAt", type: "varchar", isNullable: false },
           {
             name: "createdAt",
             type: "timestamp",
@@ -25,7 +25,7 @@ export class CreateMeetingsTable1701622767167 implements MigrationInterface {
           },
           {
             name: "updatedAt",
-            type: "datetime",
+            type: "timestamp",
             default: "CURRENT_TIMESTAMP",
           },
           {
