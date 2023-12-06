@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "email": "darmstadio@email.com",
-    "password": "senhadodam"
+    "password": "senhadoda"
 }
 
 ###
@@ -25,7 +25,7 @@ Content-Type: application/json
 ### Get Broker
 GET http://localhost:3003/user/broker/3
 ### Get Costumer
-GET http://localhost:3003/user/costumer/1
+GET http://localhost:3003/user/costumer/2
 
 
 ### Update User
