@@ -20,7 +20,7 @@ export class UserController implements IUsersController {
 
       const result = await this.userService.getBroker(idUserDTO)
 
-      res.status(STATUS_CODE.CREATED).send(result);
+      res.status(STATUS_CODE.OK).send(result);
     } catch (error) {
       next(error);
     }
@@ -38,7 +38,7 @@ export class UserController implements IUsersController {
 
       const result = await this.userService.getCostumer(idUserDTO)
 
-      res.status(STATUS_CODE.CREATED).send(result);
+      res.status(STATUS_CODE.OK).send(result);
     } catch (error) {
       next(error);
     }
