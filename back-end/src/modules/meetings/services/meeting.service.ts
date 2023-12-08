@@ -1,4 +1,3 @@
-import { UpdateResult, DeleteResult, Repository } from "typeorm";
 import { CreateMeetingDTO } from "../dtos/createMeenting.dto";
 import { IdMeetingDTO } from "../dtos/idMeeting.dto";
 import { UpdatedMeetingDTO } from "../dtos/updateMeeting.dto";
@@ -12,23 +11,22 @@ import {
 import { User } from "../../users/entity/user.entity";
 import { USER_ROLE } from "../../../constants/index.constant";
 import { IdUserDTO } from "../../users/dtos/idUser.dto";
+import { affectedRecords } from "../../../shared/utils/functions.utils";
+import { IMeetingRepository } from "../repository/meeting.repository.interface";
 
 export class MeetingService implements IMeetingService {
   constructor(
-    private readonly meetingRepository: Repository<Meeting>,
+    private readonly meetingRepository: IMeetingRepository,
     private readonly userService: IUserService
   ) {}
 
   async getMeetings({idUser}: IdUserDTO): Promise<Meeting[]> {
-    return this.meetingRepository.find({
-      select: ["idMeeting", "idBroker", "idCostumer", "startAt", "endAt"],
-      where: {idBroker: idUser}
-    });
+    return this.meetingRepository.getMeetings({idUser})
   }
 
   async createMeeting({
     idBroker,
-    idCostumer,
+    idCustomer,
     startAt,
     endAt,
   }: CreateMeetingDTO): Promise<CreateMeetingDTO> {
@@ -36,19 +34,19 @@ export class MeetingService implements IMeetingService {
 
     const promises = [
       this.userService.findBy({ idUser: idBroker, role: USER_ROLE.BROKER }),
-      this.userService.findBy({ idUser: idCostumer, role: USER_ROLE.COSTUMER }),
+      this.userService.findBy({ idUser: idCustomer, role: USER_ROLE.CUSTOMER }),
     ];
 
     let [searchedBroker, searchedCostumer] = await Promise.allSettled(promises);
     const broker = this.handleFulfilled(searchedBroker, USER_ROLE.BROKER);
-    const costumer = this.handleFulfilled(searchedCostumer, USER_ROLE.COSTUMER);
+    const costumer = this.handleFulfilled(searchedCostumer, USER_ROLE.CUSTOMER);
 
     this.checkBrokerMettings(startAt, endAt, broker as User);
-    this.checkCostumerMettings(startAt, endAt, costumer as User);
+    this.checkCustomerMettings(startAt, endAt, costumer as User);
 
     return this.meetingRepository.save({
       idBroker,
-      idCostumer,
+      idCustomer,
       startAt,
       endAt,
     });
@@ -57,7 +55,7 @@ export class MeetingService implements IMeetingService {
   async updateMeeting(
     { idMeeting }: IdMeetingDTO,
     updateMeetingDTO: UpdatedMeetingDTO
-  ): Promise<UpdateResult> {
+  ): Promise<string> {
     const meeting = await this.meetingRepository.findOneBy({ idMeeting });
 
     if (!meeting) {
@@ -75,14 +73,14 @@ export class MeetingService implements IMeetingService {
       }
     }
 
-    if (updateMeetingDTO.idCostumer) {
-      const costumer = await this.userService.findBy({
-        idUser: updateMeetingDTO.idCostumer,
-        role: USER_ROLE.COSTUMER,
+    if (updateMeetingDTO.idCustomer) {
+      const customer = await this.userService.findBy({
+        idUser: updateMeetingDTO.idCustomer,
+        role: USER_ROLE.CUSTOMER,
       });
 
-      if (!costumer) {
-        throw new NotFoundException("Costumer not found.");
+      if (!customer) {
+        throw new NotFoundException("Customer not found.");
       }
     }
 
@@ -93,12 +91,12 @@ export class MeetingService implements IMeetingService {
           role: USER_ROLE.BROKER,
         }),
         this.userService.findBy({
-          idUser: meeting.idCostumer,
-          role: USER_ROLE.COSTUMER,
+          idUser: meeting.idCustomer,
+          role: USER_ROLE.CUSTOMER,
         }),
       ];
 
-      const [brokerMeetings, costumerMeetings] = await Promise.all(promises);
+      const [brokerMeetings, customerMeetings] = await Promise.all(promises);
 
       if (updateMeetingDTO.startAt && updateMeetingDTO.endAt) {
         this.isValidMeetingDate(
@@ -109,15 +107,17 @@ export class MeetingService implements IMeetingService {
         this.checkBrokerMettings(
           updateMeetingDTO.startAt,
           updateMeetingDTO.endAt,
-          brokerMeetings as User
+          brokerMeetings as User,
+          meeting.idMeeting
         );
-        this.checkCostumerMettings(
+        this.checkCustomerMettings(
           updateMeetingDTO.startAt,
           updateMeetingDTO.endAt,
-          costumerMeetings as User
+          customerMeetings as User,
+          meeting.idMeeting
         );
 
-        return this.meetingRepository.update(idMeeting, updateMeetingDTO);
+        return affectedRecords(await this.meetingRepository.update({idMeeting}, updateMeetingDTO));
       }
 
       if (updateMeetingDTO.startAt) {
@@ -126,12 +126,14 @@ export class MeetingService implements IMeetingService {
         this.checkBrokerMettings(
           updateMeetingDTO.startAt,
           meeting.endAt,
-          brokerMeetings as User
+          brokerMeetings as User,
+          meeting.idMeeting
         );
-        this.checkCostumerMettings(
+        this.checkCustomerMettings(
           updateMeetingDTO.startAt,
           meeting.endAt,
-          costumerMeetings as User
+          customerMeetings as User,
+          meeting.idMeeting
         );
       }
 
@@ -141,29 +143,31 @@ export class MeetingService implements IMeetingService {
         this.checkBrokerMettings(
           meeting.startAt,
           updateMeetingDTO.endAt,
-          brokerMeetings as User
+          brokerMeetings as User,
+          meeting.idMeeting
         );
-        this.checkCostumerMettings(
+        this.checkCustomerMettings(
           meeting.startAt,
           updateMeetingDTO.endAt,
-          costumerMeetings as User
+          customerMeetings as User,
+          meeting.idMeeting
         );
       }
     }
 
-    return this.meetingRepository.update(idMeeting, updateMeetingDTO);
+    return affectedRecords(await this.meetingRepository.update({idMeeting}, updateMeetingDTO));
   }
 
-  async deleteMeeting({ idMeeting }: IdMeetingDTO): Promise<DeleteResult> {
+  async deleteMeeting({ idMeeting }: IdMeetingDTO): Promise<string> {
     const meeting = await this.meetingRepository.exist({
-      where: { idMeeting },
+        idMeeting ,
     });
 
     if (!meeting) {
       throw new NotFoundException("Meeting not found.");
     }
 
-    return this.meetingRepository.delete(idMeeting);
+    return affectedRecords(await this.meetingRepository.delete({idMeeting}));
   }
 
   private handleFulfilled = (
@@ -177,14 +181,18 @@ export class MeetingService implements IMeetingService {
     return result.status === "fulfilled" && result.value ? result.value : null;
   };
 
-  private checkBrokerMettings(startAt: string, endAt: string, broker: User) {
+  private checkBrokerMettings(startAt: string, endAt: string, broker: User, idMeeting?: number) {
     broker?.brokerMeetings.forEach((m) => {
-      const meetingSameTime = this.checkMeetingsSameTime(
-        startAt,
-        endAt,
-        m.startAt,
-        m.endAt
-      );
+      let meetingSameTime: boolean = false
+
+      if(idMeeting !== m.idMeeting) {
+        meetingSameTime = this.checkMeetingsSameTime(
+          startAt,
+          endAt,
+          m.startAt,
+          m.endAt
+        );
+      }
 
       if (meetingSameTime) {
         throw new NotAcceptableException(
@@ -200,18 +208,23 @@ export class MeetingService implements IMeetingService {
     });
   }
 
-  private checkCostumerMettings(
+  private checkCustomerMettings(
     startAt: string,
     endAt: string,
-    costumer: User
+    customer: User,
+    idMeeting?: number
   ) {
-    costumer?.costumerMeetings.forEach((m) => {
-      const meetingSameTime = this.checkMeetingsSameTime(
-        startAt,
-        endAt,
-        m.startAt,
-        m.endAt
-      );
+    customer?.customerMeetings.forEach((m) => {
+      let meetingSameTime: boolean = false
+
+      if(idMeeting !== m.idMeeting) {
+        meetingSameTime = this.checkMeetingsSameTime(
+          startAt,
+          endAt,
+          m.startAt,
+          m.endAt
+        );
+      }
 
       if (meetingSameTime) {
         throw new NotAcceptableException(
@@ -239,7 +252,7 @@ export class MeetingService implements IMeetingService {
     const valid = timeDifference >= thirtyMinutes && timeDifference <= twoHours;
 
     if (!valid) {
-      throw new NotAcceptableException("Meeting time is invalid");
+      throw new NotAcceptableException("Meeting time is invalid.");
     }
   }
 

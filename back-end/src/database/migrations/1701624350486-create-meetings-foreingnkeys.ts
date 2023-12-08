@@ -12,10 +12,10 @@ export class CreateMeetingsForeingnkeys1701624350486
         columnNames: ["idBroker"],
       }),
       new TableForeignKey({
-        name: "Meetings_User_IdCostumer_FK",
+        name: "Meetings_User_IdCustomer_FK",
         referencedTableName: "Users",
         referencedColumnNames: ["idUser"],
-        columnNames: ["idCostumer"],
+        columnNames: ["idCustomer"],
       }),
     ]);
   }
@@ -24,7 +24,7 @@ export class CreateMeetingsForeingnkeys1701624350486
     await queryRunner.dropForeignKey("Meentings", "Meetings_User_IdBroker_FK");
     await queryRunner.dropForeignKey(
       "Meentings",
-      "Meetings_User_IdCostumer_FK"
+      "Meetings_User_IdCustomer_FK"
     );
   }
 }

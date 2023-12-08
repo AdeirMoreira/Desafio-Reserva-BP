@@ -1,16 +1,14 @@
-import { IsString, IsEmail, IsNotEmpty, Length, IsIn } from "class-validator";
-import { ErrorObject, validateDTO } from "../../utils/validator";
+import { IsString, IsEmail, IsNotEmpty, Length,  } from "class-validator";
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
+import { ErrorObject, validateDTO } from "../../../shared/utils/validator";
 
 export class LoginDTO {
-  @IsEmail({}, { message: "Email inválido." })
+  @IsEmail({}, { message: "Invalid email." })
   email: string;
 
-  @IsNotEmpty({ message: "A senha é obrigatoria." })
-  @IsString({ message: "A senha deve ser uma string." })
-  @Length(8, undefined, {
-    message: "A senha deve conter pelo menos 8 caracteres.",
-  })
+  @IsNotEmpty({ message: "Password is required." })
+  @IsString({ message: "Password must be a srting." })
+  @Length(8, undefined, {message: "The password must contain at least 8 characters."})
   password: string;
 
   constructor(data: LoginDTO) {
@@ -18,10 +16,10 @@ export class LoginDTO {
     this.password = data.password;
   }
 
-  static async validate(data: unknown): Promise<LoginDTO> {
+  static  validate(data: unknown): LoginDTO {
     const dto = new this(data as any);
 
-    const { validated, errors } = await validateDTO(dto);
+    const { validated, errors } =  validateDTO(dto);
 
     if (!validated) {
       throw new ValidationException(errors as ErrorObject);

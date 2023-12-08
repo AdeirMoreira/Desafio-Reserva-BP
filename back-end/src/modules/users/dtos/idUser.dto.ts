@@ -1,6 +1,6 @@
 import { IsNumber,  Min } from "class-validator";
-import { ErrorObject, validateDTO } from "../../utils/validator";
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
+import { ErrorObject, validateDTO } from "../../../shared/utils/validator";
 
 export class IdUserDTO {
   @IsNumber({ allowNaN: false }, { message: "Invalid user ID." })
@@ -11,10 +11,10 @@ export class IdUserDTO {
     this.idUser = Number(data.idUser);
   }
 
-  static async validate(data: unknown): Promise<IdUserDTO> {
+  static validate(data: unknown): IdUserDTO {
     const dto = new this(data as any);
 
-    const { validated, errors } = await validateDTO(dto);
+    const { validated, errors } = validateDTO(dto);
 
     if (!validated) {
       throw new ValidationException(errors as ErrorObject);

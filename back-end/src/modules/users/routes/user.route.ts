@@ -79,9 +79,9 @@ userRoutes.get("/broker/:idUser", authMiddleware(USER_ROLE.BROKER), userControll
  *                     deletedAt: null
  */
 
-userRoutes.get("/costumer/:idUser", authMiddleware(USER_ROLE.COSTUMER), userController.getCostumers);
+userRoutes.get("/customer/:idUser", authMiddleware(USER_ROLE.CUSTOMER), userController.getCustomers);
 userRoutes.post("",  userController.createUser);
-userRoutes.patch("/:idUser", authMiddleware(USER_ROLE.BROKER),  userController.updateUser);
-userRoutes.delete("/:idUser",  userController.deleteUser);
+userRoutes.patch("/:idUser", authMiddleware(USER_ROLE.ADMIM),  userController.updateUser);
+userRoutes.delete("/:idUser", authMiddleware(USER_ROLE.ADMIM), userController.deleteUser);
 
 export default userRoutes;

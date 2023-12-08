@@ -16,7 +16,7 @@ export class UserController implements IUsersController {
     try {
       const params = req.params;
 
-      const idUserDTO = await IdUserDTO.validate(params);
+      const idUserDTO = IdUserDTO.validate(params);
 
       const result = await this.userService.getBroker(idUserDTO)
 
@@ -26,7 +26,7 @@ export class UserController implements IUsersController {
     }
   };
 
-  getCostumers = async (
+  getCustomers = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -34,9 +34,9 @@ export class UserController implements IUsersController {
     try {
       const params = req.params;
 
-      const idUserDTO = await IdUserDTO.validate(params);
+      const idUserDTO =  IdUserDTO.validate(params);
 
-      const result = await this.userService.getCostumer(idUserDTO)
+      const result = await this.userService.getCustomer(idUserDTO)
 
       res.status(STATUS_CODE.OK).send(result);
     } catch (error) {
@@ -52,7 +52,7 @@ export class UserController implements IUsersController {
     try {
       const body = req.body;
 
-      const createUserDTO = await CreateUserDTO.validate(body);
+      const createUserDTO =  CreateUserDTO.validate(body);
 
       const result = await this.userService.createUser(createUserDTO);
 
@@ -71,8 +71,8 @@ export class UserController implements IUsersController {
       const params = req.params;
       const body = req.body;
 
-      const idUser = await IdUserDTO.validate(params);
-      const updateUserDTO = await UpdateUserDTO.validate(body);
+      const idUser =  IdUserDTO.validate(params);
+      const updateUserDTO =  UpdateUserDTO.validate(body);
 
       const result = await this.userService.updateUser(idUser, updateUserDTO);
 
@@ -90,7 +90,7 @@ export class UserController implements IUsersController {
     try {
       const params = req.params;
       
-      const idUser = await IdUserDTO.validate(params);
+      const idUser = IdUserDTO.validate(params);
 
       const result = await this.userService.deleteUser(idUser);
 

@@ -1,4 +1,3 @@
-import { DeleteResult, UpdateResult } from "typeorm";
 import { CreateMeetingDTO } from "../dtos/createMeenting.dto";
 import { IdMeetingDTO } from "../dtos/idMeeting.dto";
 import { Meeting } from "../entity/meeting.entity";
@@ -11,6 +10,6 @@ export interface IMeetingService {
   updateMeeting(
     idMeetingDTO: IdMeetingDTO,
     updateMeetingDTO: UpdatedMeetingDTO
-  ): Promise<UpdateResult>;
-  deleteMeeting(idMeetingDTO: IdMeetingDTO): Promise<DeleteResult>;
+  ): Promise<string>;
+  deleteMeeting(idMeetingDTO: IdMeetingDTO): Promise<string>;
 }

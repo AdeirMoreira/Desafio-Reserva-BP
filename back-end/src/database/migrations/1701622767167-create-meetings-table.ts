@@ -15,7 +15,7 @@ export class CreateMeetingsTable1701622767167 implements MigrationInterface {
             primaryKeyConstraintName: "idMeeting_PK",
           },
           { name: "idBroker", type: "int", isNullable: false },
-          { name: "idCostumer", type: "int", isNullable: false },
+          { name: "idCustomer", type: "int", isNullable: false },
           { name: "startAt", type: "varchar", isNullable: false },
           { name: "endAt", type: "varchar", isNullable: false },
           {

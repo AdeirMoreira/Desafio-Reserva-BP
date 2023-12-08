@@ -1,39 +1,40 @@
 import { IsDateString, IsNumber, Min } from "class-validator";
-import { ErrorObject, validateDTO } from "../../utils/validator";
+
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
+import { ErrorObject, validateDTO } from "../../../shared/utils/validator";
 
 export class CreateMeetingDTO {
-  @IsNumber({ allowNaN: false }, { message: "Id do corretor inválido." })
-  @Min(1, { message: "Id do corretor dever ser maior que 0." })
+  @IsNumber({ allowNaN: false }, { message: "Invalid broker id." })
+  @Min(1, { message: "Broker id must be greater than 0." })
   idBroker: number;
 
-  @IsNumber({ allowNaN: false }, { message: "Id do cliente inválido." })
-  @Min(1, { message: "Id do cliente dever ser maior que 0." })
-  idCostumer: number;
+  @IsNumber({ allowNaN: false }, { message: "Invalid customer id." })
+  @Min(1, { message: "Customer id must be greater than 0." })
+  idCustomer: number;
 
   @IsDateString(
     { strict: true, strictSeparator: true },
-    { message: "Data ou hora de inicio da reunião inválida." }
+    { message: "Invalid meeting start date or time." }
   )
   startAt: string;
 
   @IsDateString(
     { strict: true, strictSeparator: true },
-    { message: "Data ou hora do fim da reunião inválida." }
+    { message: "Invalid meeting end date or time." }
   )
   endAt: string;
 
   constructor(data: CreateMeetingDTO) {
     this.idBroker = data.idBroker;
-    this.idCostumer = data.idCostumer;
+    this.idCustomer = data.idCustomer;
     this.startAt = data.startAt;
     this.endAt = data.endAt;
   }
 
-  static async validate(data: unknown): Promise<CreateMeetingDTO> {
+  static  validate(data: unknown): CreateMeetingDTO {
     const dto = new this(data as any);
 
-    const { validated, errors } = await validateDTO(dto);
+    const { validated, errors } =  validateDTO(dto);
 
     if (!validated) {
       throw new ValidationException(errors as ErrorObject);

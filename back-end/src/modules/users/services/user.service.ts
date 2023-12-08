@@ -10,7 +10,8 @@ import {
 } from "../../../middleware/error/custonErrors.error";
 import { USER_ROLE } from "../../../constants/index.constant";
 import { IHashService } from "../../auth/services/hash.service";
-import { CreatedUser, OptionalUser } from "../../utils/types";
+import { CreatedUser, OptionalUser } from "../../../shared/utils/types";
+import { affectedRecords } from "../../../shared/utils/functions.utils";
 
 export class UserService implements IUserService {
   constructor(
@@ -18,7 +19,7 @@ export class UserService implements IUserService {
     private readonly hashService: IHashService
   ) {}
 
-  getBroker({idUser}: IdUserDTO) {
+  getBroker({ idUser }: IdUserDTO) {
     return this.userRepository.find({
       select: ["idUser", "email", "name", "role"],
       where: { idUser, role: USER_ROLE.BROKER },
@@ -26,18 +27,18 @@ export class UserService implements IUserService {
     });
   }
 
-  getCostumer({idUser}: IdUserDTO) {
+  getCustomer({ idUser }: IdUserDTO) {
     return this.userRepository.find({
       select: ["idUser", "email", "name", "role"],
-      where: { idUser, role: USER_ROLE.COSTUMER },
-      relations: { costumerMeetings: true },
+      where: { idUser, role: USER_ROLE.CUSTOMER },
+      relations: { customerMeetings: true },
     });
   }
 
   async findBy(optionalUser: OptionalUser) {
     return this.userRepository.findOne({
       where: optionalUser,
-      relations: { brokerMeetings: true, costumerMeetings: true },
+      relations: { brokerMeetings: true, customerMeetings: true },
     });
   }
 
@@ -83,10 +84,12 @@ export class UserService implements IUserService {
       updateUserDTO.password = hashPassword;
     }
 
-    return this.userRepository.update(idUser, updateUserDTO);
+    return affectedRecords(
+      await this.userRepository.update(idUser, updateUserDTO)
+    );
   }
 
-  async deleteUser(idUserDTO: IdUserDTO) {
+  async deleteUser(idUserDTO: IdUserDTO): Promise<string> {
     const { idUser } = idUserDTO;
     const user = await this.userRepository.exist({ where: { idUser } });
 
@@ -94,6 +97,6 @@ export class UserService implements IUserService {
       throw new NotFoundException();
     }
 
-    return this.userRepository.delete({ idUser });
+    return affectedRecords(await this.userRepository.delete({ idUser }));
   }
 }

@@ -17,7 +17,7 @@ export class MeetingController implements IMeentingController {
   ): Promise<void> => {
     try {
       const body = req.body;
-      const createMeetingDTO = await CreateMeetingDTO.validate(body);
+      const createMeetingDTO = CreateMeetingDTO.validate(body);
 
       const result = await this.meetingService.createMeeting(createMeetingDTO);
 
@@ -34,7 +34,7 @@ export class MeetingController implements IMeentingController {
     try {
       const params = req.params;
 
-      const idUserDTO = await IdUserDTO.validate(params);
+      const idUserDTO =  IdUserDTO.validate(params);
 
       const result = await this.meetingService.getMeetings(idUserDTO)
       
@@ -52,8 +52,8 @@ export class MeetingController implements IMeentingController {
       const params = req.params;
       const body = req.body;
 
-      const idMeetingDTO = await IdMeetingDTO.validate(params);
-      const updateMeetingDTO = await UpdatedMeetingDTO.validate(body);
+      const idMeetingDTO =  IdMeetingDTO.validate(params);
+      const updateMeetingDTO =  UpdatedMeetingDTO.validate(body);
 
       const result = await this.meetingService.updateMeeting(
         idMeetingDTO,
@@ -73,7 +73,7 @@ export class MeetingController implements IMeentingController {
     try {
       const params = req.params;
 
-      const idMeetingDTO = await IdMeetingDTO.validate(params);
+      const idMeetingDTO = IdMeetingDTO.validate(params);
 
       const result = await this.meetingService.deleteMeeting(idMeetingDTO);
 

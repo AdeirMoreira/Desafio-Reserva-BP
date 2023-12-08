@@ -1,6 +1,7 @@
 import { IsString, IsEmail, IsNotEmpty, Length, IsIn } from "class-validator";
-import { ErrorObject, validateDTO } from "../../utils/validator";
+
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
+import { ErrorObject, validateDTO } from "../../../shared/utils/validator";
 
 export class CreateUserDTO {
   @IsNotEmpty({message: 'The name of the user is required.'})
@@ -17,8 +18,8 @@ export class CreateUserDTO {
   })
   password: string;
 
-  @IsIn(["Broker", "Costumer"], {
-    message: "User role must be 'Broker' or 'Customer.'",
+  @IsIn(["Broker", "Customer", "Adm"], {
+    message: "User role must be 'Broker' or 'Customer or 'Adm'",
   })
   role: string;
 
@@ -29,10 +30,10 @@ export class CreateUserDTO {
     this.role = data.role
   }
 
-  static async validate(data: unknown): Promise<CreateUserDTO> {
+  static  validate(data: unknown): CreateUserDTO {
     const dto = new this(data as any);
 
-    const { validated, errors } = await validateDTO(dto);
+    const { validated, errors } =  validateDTO(dto);
 
     if (!validated) {
       throw new ValidationException(errors as ErrorObject);

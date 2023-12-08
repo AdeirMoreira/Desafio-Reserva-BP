@@ -25,7 +25,7 @@ const meetingRoutes = express.Router()
  *         description: Dados da Reunião buscado com sucesso.
  */
 
-meetingRoutes.get('/:idUser', meetingController.getMeetings)
+meetingRoutes.get('/:idUser', authMiddleware(), meetingController.getMeetings)
 
 /**
  * @swagger
@@ -71,7 +71,7 @@ meetingRoutes.get('/:idUser', meetingController.getMeetings)
  *         description: Falha na validação  
  */
 
-meetingRoutes.post('', authMiddleware(USER_ROLE.COSTUMER), meetingController.createMeeting)
+meetingRoutes.post('', authMiddleware(USER_ROLE.CUSTOMER), meetingController.createMeeting)
 
 /**
  * @swagger
@@ -124,7 +124,7 @@ meetingRoutes.post('', authMiddleware(USER_ROLE.COSTUMER), meetingController.cre
  *         description: Falha na validação           
  */
 
-meetingRoutes.patch('/:idMeeting', meetingController.updateMeeting)
+meetingRoutes.patch('/:idMeeting', authMiddleware(), meetingController.updateMeeting)
 
 /**
  * @swagger
@@ -148,6 +148,6 @@ meetingRoutes.patch('/:idMeeting', meetingController.updateMeeting)
  *         description: Reunião não encontrada
  */
 
-meetingRoutes.delete('/:idMeeting', meetingController.deleteMeeting)
+meetingRoutes.delete('/:idMeeting', authMiddleware(), meetingController.deleteMeeting)
 
 export default meetingRoutes

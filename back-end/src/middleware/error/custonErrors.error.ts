@@ -1,6 +1,6 @@
 import { ERROR_MESSAGES } from "../../constants/errorMessages.constant";
 import { STATUS_CODE } from "../../constants/statusCodes.constant";
-import { ErrorObject } from "../../modules/utils/validator";
+import { ErrorObject } from "../../shared/utils/validator";
 import { typeORMHandler } from "./typeORMHandler.handler";
 
 export interface AllExceptions {

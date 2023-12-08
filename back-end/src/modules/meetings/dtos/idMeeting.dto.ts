@@ -1,20 +1,20 @@
 import { IsNumber, Min } from "class-validator";
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
-import { ErrorObject, validateDTO } from "../../utils/validator";
+import { ErrorObject, validateDTO } from "../../../shared/utils/validator";
 
 export class IdMeetingDTO {
-    @IsNumber({ allowNaN: false }, { message: "Id da reunião inválido." })
-    @Min(1, { message: "Id da reunião dever ser maior que 0." })
+    @IsNumber({ allowNaN: false }, { message: "Invalid meeting id." })
+    @Min(1, { message: "Meeting id must be greater than 0." })
     idMeeting: number;
   
     constructor(data: IdMeetingDTO) {
       this.idMeeting = Number(data.idMeeting);
     }
   
-    static async validate(data: unknown): Promise<IdMeetingDTO> {
+    static  validate(data: unknown): IdMeetingDTO {
       const dto = new this(data as any);
   
-      const { validated, errors } = await validateDTO(dto);
+      const { validated, errors } = validateDTO(dto);
   
       if (!validated) {
         throw new ValidationException(errors as ErrorObject);

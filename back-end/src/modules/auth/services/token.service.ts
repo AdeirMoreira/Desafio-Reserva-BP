@@ -1,5 +1,5 @@
-import { JwtPayload, sign, Secret, verify } from "jsonwebtoken";
-import { ExtractedTokenPayload, TokenPayload } from "../../utils/types";
+import { sign, Secret, verify } from "jsonwebtoken";
+import { ExtractedTokenPayload, TokenPayload } from "../../../shared/utils/types";
 
 export interface ITokenService {
   generateToken(payload: TokenPayload): string;

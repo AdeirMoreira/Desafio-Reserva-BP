@@ -1,6 +1,6 @@
 import { IsString, IsEmail,  Length, IsOptional } from "class-validator";
-import { ErrorObject, validateDTO } from "../../utils/validator";
 import { ValidationException } from "../../../middleware/error/custonErrors.error";
+import { ErrorObject, validateDTO } from "../../../shared/utils/validator";
 
 export class UpdateUserDTO {
   @IsOptional()
@@ -25,10 +25,10 @@ export class UpdateUserDTO {
     this.password = data.password;
   }
 
-  static async validate(data: unknown): Promise<UpdateUserDTO> {
+  static  validate(data: unknown): UpdateUserDTO {
     const dto = new this(data as any);
 
-    const { validated, errors } = await validateDTO(dto);
+    const { validated, errors } =  validateDTO(dto);
 
     if (!validated) {
       throw new ValidationException(errors as ErrorObject);

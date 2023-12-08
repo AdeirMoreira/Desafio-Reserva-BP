@@ -13,7 +13,7 @@ export class AuthController implements IAuthController {
   ): Promise<void> => {
     try {
       const body = req.body;
-      const loginDTO = await LoginDTO.validate(body);
+      const loginDTO =  LoginDTO.validate(body);
 
       const result = await this.authService.login(loginDTO);
 

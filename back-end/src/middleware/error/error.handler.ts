@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AllExceptions, ExceptionData } from "./custonErrors.error";
 import { STATUS_CODE } from "../../constants/statusCodes.constant";
-import { ErrorObject } from "../../modules/utils/validator";
+import { ErrorObject } from "../../shared/utils/validator";
 
 export class ErrorHandler {
   errorMessage: string;

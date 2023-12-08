@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { UserRoleEnum } from "../../utils/types";
 import { Meeting } from "../../meetings/entity/meeting.entity";
+import { UserRoleEnum } from "../../../shared/utils/types";
 
 
 @Entity({name: 'Users'})
@@ -34,8 +34,8 @@ export class User {
   @OneToMany(()=> Meeting, (meeting) => meeting.idBroker)
   brokerMeetings!:Meeting[]
 
-  @OneToMany(()=> Meeting, (meeting) => meeting.idCostumer)
-  costumerMeetings!:Meeting[]
+  @OneToMany(()=> Meeting, (meeting) => meeting.idCustomer)
+  customerMeetings!:Meeting[]
 
   @CreateDateColumn()
   createdAt!: string;

@@ -1,7 +1,7 @@
 import { ERROR_MESSAGES } from "../../../constants/errorMessages.constant";
 import { UnauthorizedException } from "../../../middleware/error/custonErrors.error";
+import { TokenObject, TokenPayload, UserRoleType } from "../../../shared/utils/types";
 import { IUserService } from "../../users/services/user.service.interface";
-import { TokenObject, TokenPayload, UserRoleType } from "../../utils/types";
 import { LoginDTO } from "../dtos/login.dto";
 import { IAuthService } from "./auth.service.interface";
 import { IHashService } from "./hash.service";

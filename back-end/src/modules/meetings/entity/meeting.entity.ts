@@ -26,12 +26,12 @@ export class Meeting {
 
   @ManyToOne(() => User, (user) => user.idUser)
   @JoinColumn({
-    name: "idCostumer",
-    foreignKeyConstraintName: "Meetings_User_IdCostumer_FK",
+    name: "idCustomer",
+    foreignKeyConstraintName: "Meetings_User_IdCustomer_FK",
     referencedColumnName: "idUser",
   })
   @Column()
-  idCostumer!: number;
+  idCustomer!: number;
 
   @Column()
   startAt!: string;

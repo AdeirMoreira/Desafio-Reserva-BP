@@ -1,4 +1,4 @@
-import { validate, ValidationError, ValidatorOptions } from "class-validator";
+import { validateSync, ValidationError, ValidatorOptions } from "class-validator";
 
 export interface ErrorObject {
   [key: string]: string[];
@@ -17,8 +17,8 @@ const validatorOptions: ValidatorOptions = {
   dismissDefaultMessages: true,
 };
 
-export const validateDTO = async (dto: object): Promise<ValidationResult> => {
-  const errors: ValidationError[] = await validate(
+export const validateDTO =  (dto: object): ValidationResult => {
+  const errors: ValidationError[] = validateSync(
     dto as object,
     validatorOptions
   );

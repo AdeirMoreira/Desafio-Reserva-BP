@@ -1,9 +1,10 @@
-import { User } from "../../users/entity/user.entity";
+import { User } from "../../../modules/users/entity/user.entity";
 
-export type UserRoleType = "Broker" | "Costumer";
+export type UserRoleType = "Broker" | "Customer" | "Adm";
 export enum UserRoleEnum {
   "Broker",
-  "Costumer",
+  "Customer",
+  "Adm"
 }
 
 export type TokenPayload = {
