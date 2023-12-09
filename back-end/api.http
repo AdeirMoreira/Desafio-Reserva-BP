@@ -22,6 +22,10 @@ Content-Type: application/json
     "role": "Adm"
 }
 
+### Get usert
+GET http://localhost:3003/user/Adm
+Authorization: {{accessToken}}
+
 ### Get Broker
 GET http://localhost:3003/user/broker/2
 Authorization: {{accessToken}}

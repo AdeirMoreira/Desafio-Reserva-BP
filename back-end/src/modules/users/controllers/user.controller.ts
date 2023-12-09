@@ -5,10 +5,30 @@ import { CreateUserDTO } from "../dtos/createUser.dto";
 import { STATUS_CODE } from "../../../constants/statusCodes.constant";
 import { IdUserDTO } from "../dtos/idUser.dto";
 import { UpdateUserDTO } from "../dtos/updateUser.dto";
+import { RoleDTO } from "../dtos/role.dto";
 
 export class UserController implements IUsersController {
   constructor(private readonly userService: IUserService) {}
-  getBrokers = async (
+
+  getUsers = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const params = req.params;
+
+      const roleDTO = RoleDTO.validate(params);
+
+      const result = await this.userService.getUsersByRole(roleDTO)
+
+      res.status(STATUS_CODE.OK).send(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getBroker = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -26,7 +46,7 @@ export class UserController implements IUsersController {
     }
   };
 
-  getCustomers = async (
+  getCustomer = async (
     req: Request,
     res: Response,
     next: NextFunction

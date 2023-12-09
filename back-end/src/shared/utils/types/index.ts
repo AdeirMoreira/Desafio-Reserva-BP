@@ -8,6 +8,7 @@ export enum UserRoleEnum {
 }
 
 export type TokenPayload = {
+  idUser: number,
   email: string;
   name: string;
   role: UserRoleType;

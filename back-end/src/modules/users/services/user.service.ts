@@ -12,12 +12,28 @@ import { USER_ROLE } from "../../../constants/index.constant";
 import { IHashService } from "../../auth/services/hash.service";
 import { CreatedUser, OptionalUser } from "../../../shared/utils/types";
 import { affectedRecords } from "../../../shared/utils/functions.utils";
+import { RoleDTO } from "../dtos/role.dto";
 
 export class UserService implements IUserService {
   constructor(
     private readonly userRepository: Repository<User>,
     private readonly hashService: IHashService
   ) {}
+
+  getUsersByRole({ role }: RoleDTO) {
+    return this.userRepository.find({
+      select: [
+        "idUser",
+        "name",
+        "email",
+        "role",
+        "brokerMeetings",
+        "customerMeetings",
+      ],
+      where: { role },
+      relations: { brokerMeetings: true, customerMeetings: true },
+    });
+  }
 
   getBroker({ idUser }: IdUserDTO) {
     return this.userRepository.find({

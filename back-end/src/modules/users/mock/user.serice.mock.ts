@@ -12,8 +12,22 @@ import {
   outherCustomerUserMock
 } from "./user.mock";
 import { CreatedUser } from "../../../shared/utils/types";
+import { RoleDTO } from "../dtos/role.dto";
 
 export class UserServiceMock implements IUserService {
+  private users: User[] =  [
+    customerUserMock,
+    brokerUserMock,
+    outerBrokerUserMock,
+    outherCustomerUserMock,
+    customerFreeUserMock,
+    brokerFreeUserMock,
+  ];
+
+  async getUsersByRole({role}: RoleDTO): Promise<User[]> {
+    return this.users.filter(u => u.role === role)
+  }
+
   async getBroker(optionalUser: IdUserDTO): Promise<User[]> {
     return [brokerUserMock];
   }
@@ -23,16 +37,9 @@ export class UserServiceMock implements IUserService {
   async findBy(optionalUser: Partial<CreatedUser>): Promise<User | null> {
     const { idUser } = optionalUser;
 
-    const brokers = [
-      customerUserMock,
-      brokerUserMock,
-      outerBrokerUserMock,
-      outherCustomerUserMock,
-      customerFreeUserMock,
-      brokerFreeUserMock,
-    ];
+    
 
-    const user = brokers.find((b) => b.idUser === idUser);
+    const user = this.users.find((b) => b.idUser === idUser);
 
     if (user && user?.idUser === idUser && user?.role === optionalUser.role) {
       return user;

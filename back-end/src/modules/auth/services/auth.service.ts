@@ -26,6 +26,7 @@ export class AuthService implements IAuthService {
     }
 
     const payload: TokenPayload = {
+      idUser: user.idUser,
       name: user.name,
       email: user.email,
       role: user.role as UserRoleType,
