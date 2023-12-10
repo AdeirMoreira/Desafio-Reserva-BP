@@ -31,10 +31,10 @@ export class User {
   })
   role!: string;
 
-  @OneToMany(()=> Meeting, (meeting) => meeting.idBroker)
+  @OneToMany(()=> Meeting, (meeting) => meeting.broker)
   brokerMeetings!:Meeting[]
 
-  @OneToMany(()=> Meeting, (meeting) => meeting.idCustomer)
+  @OneToMany(()=> Meeting, (meeting) => meeting.customer)
   customerMeetings!:Meeting[]
 
   @CreateDateColumn()

@@ -21,8 +21,10 @@ const useAuthStore = defineStore('auth', {
 
   actions: {
     login(userData: Omit<UserData, 'isAuthenticated'>) {
+      localStorage.setItem('userData', JSON.stringify(userData))
+
       const { idUser, email, name, role, token } = userData
-      
+
       this.idUser = idUser
       this.email = email
       this.name = name
@@ -33,17 +35,35 @@ const useAuthStore = defineStore('auth', {
     },
 
     logout() {
-      this.isAuthenticated = false
+      localStorage.removeItem('userData')
       this.name = null
       this.email = null
       this.role = null
       this.token = null
-    }
-  },
 
-  getters: {
-    // Getter para verificar se o usuário está autenticado
-    getIsAuthenticated: (state) => state.isAuthenticated
+      this.isAuthenticated = false
+    },
+
+    getIsAuthenticated() {
+      if (this.isAuthenticated) {
+        return this.isAuthenticated
+      }
+
+      const localStorageData = localStorage.getItem('userData')
+
+      if (localStorageData) {
+        const userData: UserData = JSON.parse(localStorageData)
+
+        this.idUser = userData.idUser
+        this.email = userData.email
+        this.name = userData.name
+        this.role = userData.role
+        this.token = userData.token
+        this.isAuthenticated = true
+      }
+
+      return this.isAuthenticated
+    }
   }
 })
 

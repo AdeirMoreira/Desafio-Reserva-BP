@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CustonException, UnauthorizedException } from "../error/custonErrors.error";
 import { tokenService } from "../../modules/auth/factory/auth.factory";
 import { ERROR_MESSAGES } from "../../constants/errorMessages.constant";
+import UserContext from "../../shared/utils/context/userContext";
 
 function extractTokenFromHeader(request: Request): string | undefined {
   const [type, token] = request.headers.authorization?.split(" ") ?? [];
@@ -18,15 +19,15 @@ export const authMiddleware = (userRole?: string) => {
       }
 
       const {
-        payload: { role },
+        payload: { role, idUser },
       } = tokenService.validateToken(token);
-
-      console.log(tokenService.validateToken(token));
       
-
       if (userRole &&  userRole !== role) {
         throw new UnauthorizedException();
       }
+
+      // Foda demais essa solução Evertom
+      UserContext.getInstance().setUserId(idUser)
 
       next();
     } catch (error: any) {

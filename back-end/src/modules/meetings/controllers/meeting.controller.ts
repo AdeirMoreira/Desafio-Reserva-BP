@@ -26,7 +26,8 @@ export class MeetingController implements IMeentingController {
       next(error);
     }
   };
-  getMeetings = async (
+
+  getMeetingsByUser = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -36,13 +37,32 @@ export class MeetingController implements IMeentingController {
 
       const idUserDTO =  IdUserDTO.validate(params);
 
-      const result = await this.meetingService.getMeetings(idUserDTO)
+      const result = await this.meetingService.getMeetingsByUser(idUserDTO)
       
       res.status(STATUS_CODE.OK).send(result);
     } catch (error) {
       next(error);
     }
   };
+
+  getMeeting = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const params = req.params;
+
+      const idMeetingDTO =  IdMeetingDTO.validate(params);
+
+      const result = await this.meetingService.getMeeting(idMeetingDTO)
+      
+      res.status(STATUS_CODE.OK).send(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   updateMeeting = async (
     req: Request,
     res: Response,

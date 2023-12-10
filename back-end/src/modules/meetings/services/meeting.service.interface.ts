@@ -5,11 +5,12 @@ import { UpdatedMeetingDTO } from "../dtos/updateMeeting.dto";
 import { IdUserDTO } from "../../users/dtos/idUser.dto";
 
 export interface IMeetingService {
-  getMeetings(idUserDTO: IdUserDTO): Promise<Meeting[]>;
-  createMeeting(createMeetingDTO: CreateMeetingDTO): Promise<CreateMeetingDTO>;
+  getMeetingsByUser(idUserDTO: IdUserDTO): Promise<Meeting[]>;
+  getMeeting(idMeetingDTO: IdMeetingDTO): Promise<Meeting[]>;
+  createMeeting(createMeetingDTO: CreateMeetingDTO): Promise<CreateMeetingDTO[]>;
   updateMeeting(
     idMeetingDTO: IdMeetingDTO,
     updateMeetingDTO: UpdatedMeetingDTO
-  ): Promise<string>;
-  deleteMeeting(idMeetingDTO: IdMeetingDTO): Promise<string>;
+  ): Promise<Meeting[]>;
+  deleteMeeting(idMeetingDTO: IdMeetingDTO): Promise<Meeting[]>;
 }

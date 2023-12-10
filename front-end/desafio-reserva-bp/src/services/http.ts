@@ -39,7 +39,30 @@ export const HttpService = {
 
   async post(url: string, body: object) {
     try {
-      const { data } = await axios.post(url, body)
+      const header = buildHeader()
+      const { data } = await axios.post(url, body, header)
+      return data
+    } catch (error: any) {
+      const data =  error?.response?.data
+      throw data
+    }
+  },
+
+  async patch(url: string, body: object) {
+    try {
+      const header = buildHeader()
+      const { data } = await axios.patch(url, body, header)
+      return data
+    } catch (error: any) {
+      const data =  error?.response?.data
+      throw data
+    }
+  },
+
+  async delete(url: string,) {
+    try {
+      const header = buildHeader()
+      const { data } = await axios.delete(url, header)
       return data
     } catch (error: any) {
       const data =  error?.response?.data

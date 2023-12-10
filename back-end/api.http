@@ -4,8 +4,8 @@ POST http://localhost:3003/login
 Content-Type: application/json 
 
 {
-    "email": "Adm@email.com",
-    "password": "senhadoadm"
+    "email": "darmstadio@email.com",
+    "password": "senhadodam"
 }
 
 ###
@@ -54,8 +54,12 @@ Authorization: {{accessToken}}
 
 ######################################################################################################
 
+### Get Meetings by user
+GET http://localhost:3003/meeting/user/3
+Authorization: {{accessToken}}
+
 ### Get Meeting
-GET http://localhost:3003/meeting/1
+GET http://localhost:3003/meeting/2
 Authorization: {{accessToken}}
 
 ### Create Meeting

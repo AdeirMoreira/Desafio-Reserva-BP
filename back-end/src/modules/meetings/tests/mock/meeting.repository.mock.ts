@@ -8,9 +8,13 @@ import { IMeetingRepository } from "../../repository/meeting.repository.interfac
 import { meetingScheduledMock, meetingScheduledMock2, meetingScheduledMock3, meetingScheduledMock4, newMeetingMock } from "./meeting.mock";
 
 export class MeetingRepositoryMock implements IMeetingRepository{
-    async getMeetings({ idUser }: IdUserDTO): Promise<Meeting[]> {
+    async getMeetingsByUser({ idUser }: IdUserDTO): Promise<Meeting[]> {
         const meetings = [meetingScheduledMock, meetingScheduledMock2, meetingScheduledMock3, meetingScheduledMock4]
         return meetings.filter(m => m.idCustomer === idUser || m.idBroker === idUser)
+    }
+    async getMeeting({ idMeeting }: IdMeetingDTO): Promise<Meeting[]> {
+        const meetings = [meetingScheduledMock, meetingScheduledMock2, meetingScheduledMock3, meetingScheduledMock4]
+        return meetings.filter(m => m.idMeeting === idMeeting)
     }
     async exist(where: Partial<Meeting>): Promise<boolean> {
         return where.idMeeting === meetingScheduledMock.idMeeting

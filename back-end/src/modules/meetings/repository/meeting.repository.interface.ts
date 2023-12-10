@@ -6,7 +6,8 @@ import { Meeting } from "../entity/meeting.entity";
 import { UpdatedMeetingDTO } from "../dtos/updateMeeting.dto";
 
 export interface IMeetingRepository {
-    getMeetings({ idUser }: IdUserDTO): Promise<Meeting[]>;
+    getMeetingsByUser({ idUser }: IdUserDTO): Promise<Meeting[]>;
+    getMeeting({ idMeeting }: IdMeetingDTO): Promise<Meeting[]>;
     exist(where: Partial<Meeting>): Promise<boolean>;
     findOneBy(where: Partial<Meeting>): Promise<Meeting | null>;
     save(createMeetingDTO: CreateMeetingDTO): Promise<Meeting>;

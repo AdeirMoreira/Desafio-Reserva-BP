@@ -7,6 +7,28 @@ const meetingRoutes = express.Router()
 
 /**
  * @swagger
+ * /meeting/user/{idUser}:
+ *   get:
+ *     summary: Busca dos dados das reuniões agendadas de um usuário.
+ *     tags: [Meeting]
+ *     parameters:
+ *       - in: path
+ *         name: idUser
+ *         description: ID do usuario.
+ *         required: true
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados da Reunião buscado com sucesso.
+ */
+
+meetingRoutes.get('/user/:idUser', authMiddleware(), meetingController.getMeetingsByUser)
+
+/**
+ * @swagger
  * /meeting/{idMeeting}:
  *   get:
  *     summary: Busca dos dados de uma reunião agendada.
@@ -25,7 +47,7 @@ const meetingRoutes = express.Router()
  *         description: Dados da Reunião buscado com sucesso.
  */
 
-meetingRoutes.get('/:idUser', authMiddleware(), meetingController.getMeetings)
+meetingRoutes.get('/:idMeeting', authMiddleware(), meetingController.getMeeting)
 
 /**
  * @swagger

@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
     
     // Se o usuário NÃO está autenticado e NÃO está na página de login
     
-    if (!store.auth.isAuthenticated && to.path !== '/login') {
+    if (!store.auth.getIsAuthenticated() && to.path !== '/login') {
 
       // Interromper a navegação e redirecionar para a página de login
       return next('/login');

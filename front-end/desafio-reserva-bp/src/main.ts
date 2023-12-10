@@ -5,9 +5,8 @@ import { createPinia } from 'pinia'
 
 import Vuesax from 'vuesax3'
 
-Vuesax
-
 import 'vuesax3/dist/vuesax.css' //Vuesax styles
+import 'material-icons/iconfont/material-icons.css';
 
 import App from './App.vue'
 import router from './router'

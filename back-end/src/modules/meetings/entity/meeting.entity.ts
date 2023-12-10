@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { User } from "../../users/entity/user.entity";
 
-@Entity({ name: "Meentings" })
+@Entity({ name: "Meetings" })
 export class Meeting {
   @PrimaryGeneratedColumn()
   idMeeting!: number;
@@ -24,6 +24,10 @@ export class Meeting {
   @Column()
   idBroker!: number;
 
+  @ManyToOne(() => User, (user) => user.brokerMeetings)
+  @JoinColumn({ name: 'idBroker' })
+  broker!: User;
+
   @ManyToOne(() => User, (user) => user.idUser)
   @JoinColumn({
     name: "idCustomer",
@@ -32,6 +36,10 @@ export class Meeting {
   })
   @Column()
   idCustomer!: number;
+
+  @ManyToOne(() => User, (user) => user.customerMeetings)
+  @JoinColumn({ name: 'idCustomer' })
+  customer!: User;
 
   @Column()
   startAt!: string;
