@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES } from "../../../constants/errorMessages.constant";
 import {
   NotAcceptableException,
   NotFoundException,
@@ -19,10 +20,10 @@ describe("Testing: Meeting Service", () => {
     new UserServiceMock()
   );
 
-  describe("Method getMeeting", () => {
+  describe("Method getMeetingsByUser", () => {
     it("broker 3 meeting sucess", async () => {
       try {
-        const result = await meetingService.getMeetings({ idUser: 3 });
+        const result = await meetingService.getMeetingsByUser({ idUser: 3 });
         expect(result[0]).toBe(meetingScheduledMock2);
         expect(result[1]).toBe(meetingScheduledMock4);
       } catch (error) {
@@ -32,7 +33,7 @@ describe("Testing: Meeting Service", () => {
 
     it("Customer 2 meeting sucess", async () => {
       try {
-        const result = await meetingService.getMeetings({ idUser: 2 });
+        const result = await meetingService.getMeetingsByUser({ idUser: 2 });
         expect(result[0]).toBe(meetingScheduledMock);
         expect(result[1]).toBe(meetingScheduledMock4);
       } catch (error) {
@@ -45,7 +46,8 @@ describe("Testing: Meeting Service", () => {
     it("Success", async () => {
       try {
         const result = await meetingService.createMeeting(newMeetingMock);
-        expect(result).toBe(newMeetingMock);
+        expect(result.length).toBe(1)
+        expect(result[0]).toBe(meetingScheduledMock);
       } catch (error) {
         expect(error).toBe(undefined);
       }
@@ -61,7 +63,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -75,7 +77,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -90,7 +92,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -105,7 +107,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -116,7 +118,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotFoundException);
-        expect(error.message).toBe("Broker not found.");
+        expect(error.message).toBe(ERROR_MESSAGES.BROKER_NOT_FOUND);
       }
     });
 
@@ -127,7 +129,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotFoundException);
-        expect(error.message).toBe("Customer not found.");
+        expect(error.message).toBe(ERROR_MESSAGES.CUSTOMER_NOT_FOUND);
       }
     });
 
@@ -144,7 +146,7 @@ describe("Testing: Meeting Service", () => {
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
         expect(error.message).toBe(
-          "It was not possible to schedule the meeting from 03/12/2023 16:30 to 03/12/2023 17:30 because the broker Broker already has a meeting scheduled from 03/12/2023 15:30 to 03/12/2023 17:00."
+          "Não foi possível agendar reunião de 03/12/2023 16:30 às 03/12/2023 17:30 pois o/a corretor/a Broker já tem reunião agendada de 03/12/2023 15:30 às 03/12/2023 17:00."
         );
       }
     });
@@ -162,7 +164,7 @@ describe("Testing: Meeting Service", () => {
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
         expect(error.message).toBe(
-          "It was not possible to schedule the meeting from 03/12/2023 18:00 to 03/12/2023 20:00 because you already has a meeting scheduled from 03/12/2023 20:00 to 03/12/2023 22:00."
+          "Não foi possível agendar reunião de 03/12/2023 18:00 às 03/12/2023 20:00 pois você já tem reunião agendada de 03/12/2023 20:00 às 03/12/2023 22:00."
         );
       }
     });
@@ -175,7 +177,8 @@ describe("Testing: Meeting Service", () => {
           { idMeeting: meetingScheduledMock.idMeeting },
           { ...meetingScheduledMock, startAt: "2023-12-03T16:00:12" }
         );
-        expect(result).toBe("Affected records: 1");
+        expect(result.length).toBe(1)
+        expect(result[0]).toBe(meetingScheduledMock);
       } catch (error) {
         expect(error).toBe(undefined);
       }
@@ -190,7 +193,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotFoundException);
-        expect(error.message).toBe("Meeting not found.");
+        expect(error.message).toBe(ERROR_MESSAGES.MEETING_NOT_FOUND);
       }
     });
 
@@ -207,7 +210,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -224,7 +227,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -242,7 +245,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -260,7 +263,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
-        expect(error.message).toBe("Meeting time is invalid.");
+        expect(error.message).toBe(ERROR_MESSAGES.INVALID_MEETING_TIME);
       }
     });
 
@@ -277,7 +280,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotFoundException);
-        expect(error.message).toBe("Broker not found.");
+        expect(error.message).toBe(ERROR_MESSAGES.BROKER_NOT_FOUND);
       }
     });
 
@@ -294,7 +297,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotFoundException);
-        expect(error.message).toBe("Customer not found.");
+        expect(error.message).toBe(ERROR_MESSAGES.CUSTOMER_NOT_FOUND);
       }
     });
 
@@ -314,7 +317,7 @@ describe("Testing: Meeting Service", () => {
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
         expect(error.message).toBe(
-          "It was not possible to schedule the meeting from 03/12/2023 17:00 to 03/12/2023 19:00 because the broker Broker already has a meeting scheduled from 03/12/2023 17:30 to 03/12/2023 19:00."
+          "Não foi possível agendar reunião de 03/12/2023 17:00 às 03/12/2023 19:00 pois o/a corretor/a Broker já tem reunião agendada de 03/12/2023 17:30 às 03/12/2023 19:00."
         );
       }
     });
@@ -335,7 +338,7 @@ describe("Testing: Meeting Service", () => {
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotAcceptableException);
         expect(error.message).toBe(
-          "It was not possible to schedule the meeting from 03/12/2023 18:30 to 03/12/2023 20:30 because the broker Broker already has a meeting scheduled from 03/12/2023 17:30 to 03/12/2023 19:00."
+          "Não foi possível agendar reunião de 03/12/2023 18:30 às 03/12/2023 20:30 pois o/a corretor/a Broker já tem reunião agendada de 03/12/2023 17:30 às 03/12/2023 19:00."
         );
       }
     });
@@ -345,7 +348,8 @@ describe("Testing: Meeting Service", () => {
     it("Success", async () => {
       try {
         const result = await meetingService.deleteMeeting({ idMeeting: 1 });
-        expect(result).toBe("Affected records: 1");
+        expect(result.length).toBe(1)
+        expect(result[0]).toBe(meetingScheduledMock);
       } catch (error: any) {
         expect(error).toBe(undefined);
       }
@@ -357,7 +361,7 @@ describe("Testing: Meeting Service", () => {
         expect(result).toBe(undefined);
       } catch (error: any) {
         expect(error).toBeInstanceOf(NotFoundException);
-        expect(error.message).toBe("Meeting not found.");
+        expect(error.message).toBe(ERROR_MESSAGES.MEETING_NOT_FOUND);
       }
     });
   });

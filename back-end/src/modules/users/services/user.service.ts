@@ -13,6 +13,7 @@ import { IHashService } from "../../auth/services/hash.service";
 import { CreatedUser, OptionalUser } from "../../../shared/utils/types";
 import { affectedRecords } from "../../../shared/utils/functions.utils";
 import { RoleDTO } from "../dtos/role.dto";
+import { ERROR_MESSAGES } from "../../../constants/errorMessages.constant";
 
 export class UserService implements IUserService {
   constructor(
@@ -69,7 +70,7 @@ export class UserService implements IUserService {
 
     if (user) {
       throw new CustonException(
-        `The email ${createUserDTO.email} is already registered.`,
+        ERROR_MESSAGES.EMAIL_ALREADY_RESGISTRED(createUserDTO.email),
         400
       );
     }

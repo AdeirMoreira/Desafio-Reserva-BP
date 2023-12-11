@@ -9,6 +9,9 @@ import { meetingScheduledMock, meetingScheduledMock2, meetingScheduledMock3, mee
 
 export class MeetingRepositoryMock implements IMeetingRepository{
     async getMeetingsByUser({ idUser }: IdUserDTO): Promise<Meeting[]> {
+        if(!idUser){
+            return [meetingScheduledMock]
+        }
         const meetings = [meetingScheduledMock, meetingScheduledMock2, meetingScheduledMock3, meetingScheduledMock4]
         return meetings.filter(m => m.idCustomer === idUser || m.idBroker === idUser)
     }

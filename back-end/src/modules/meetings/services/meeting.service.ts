@@ -9,11 +9,11 @@ import {
   NotFoundException,
 } from "../../../middleware/error/custonErrors.error";
 import { User } from "../../users/entity/user.entity";
-import { USER_ROLE } from "../../../constants/index.constant";
+import { USER_ROLE, USER_ROLE_PT } from "../../../constants/index.constant";
 import { IdUserDTO } from "../../users/dtos/idUser.dto";
-import { affectedRecords } from "../../../shared/utils/functions.utils";
 import { IMeetingRepository } from "../repository/meeting.repository.interface";
 import UserContext from "../../../shared/utils/context/userContext";
+import { ERROR_MESSAGES } from "../../../constants/errorMessages.constant";
 
 export class MeetingService implements IMeetingService {
   constructor(
@@ -43,8 +43,11 @@ export class MeetingService implements IMeetingService {
     ];
 
     let [searchedBroker, searchedCostumer] = await Promise.allSettled(promises);
-    const broker = this.handleFulfilled(searchedBroker, USER_ROLE.BROKER);
-    const costumer = this.handleFulfilled(searchedCostumer, USER_ROLE.CUSTOMER);
+    const broker = this.handleFulfilled(searchedBroker, USER_ROLE_PT.BROKER);
+    const costumer = this.handleFulfilled(
+      searchedCostumer,
+      USER_ROLE_PT.CUSTOMER
+    );
 
     this.checkBrokerMettings(startAt, endAt, broker as User);
     this.checkCustomerMettings(startAt, endAt, costumer as User);
@@ -67,7 +70,7 @@ export class MeetingService implements IMeetingService {
     const meeting = await this.meetingRepository.findOneBy({ idMeeting });
 
     if (!meeting) {
-      throw new NotFoundException("Meeting not found.");
+      throw new NotFoundException(ERROR_MESSAGES.MEETING_NOT_FOUND);
     }
 
     if (updateMeetingDTO.idBroker) {
@@ -77,7 +80,7 @@ export class MeetingService implements IMeetingService {
       });
 
       if (!broker) {
-        throw new NotFoundException("Broker not found.");
+        throw new NotFoundException(ERROR_MESSAGES.BROKER_NOT_FOUND);
       }
     }
 
@@ -88,7 +91,7 @@ export class MeetingService implements IMeetingService {
       });
 
       if (!customer) {
-        throw new NotFoundException("Customer not found.");
+        throw new NotFoundException(ERROR_MESSAGES.CUSTOMER_NOT_FOUND);
       }
     }
 
@@ -178,7 +181,7 @@ export class MeetingService implements IMeetingService {
     });
 
     if (!meeting) {
-      throw new NotFoundException("Meeting not found.");
+      throw new NotFoundException(ERROR_MESSAGES.MEETING_NOT_FOUND);
     }
 
     await this.meetingRepository.delete({ idMeeting });
@@ -192,7 +195,7 @@ export class MeetingService implements IMeetingService {
     entityName: string
   ) => {
     if (result.status === "fulfilled" && !result.value) {
-      throw new NotFoundException(`${entityName} not found.`);
+      throw new NotFoundException(`${entityName} não encontrado.`);
     }
 
     return result.status === "fulfilled" && result.value ? result.value : null;
@@ -218,13 +221,13 @@ export class MeetingService implements IMeetingService {
 
       if (meetingSameTime) {
         throw new NotAcceptableException(
-          `It was not possible to schedule the meeting from ${this.formatDate(
-            startAt
-          )} to ${this.formatDate(endAt)}` +
-            ` because the broker ${broker.name} already has a meeting scheduled` +
-            ` from ${this.formatDate(m.startAt)} to ${this.formatDate(
-              m.endAt
-            )}.`
+          ERROR_MESSAGES.BROKER_MEETING_TIME_CONFLICT({
+            startAt: this.formatDate(startAt),
+            endAt: this.formatDate(endAt),
+            brokerName: broker.name,
+            meetingStar: this.formatDate(m.startAt),
+            meetingEnd: this.formatDate(m.endAt),
+          })
         );
       }
     });
@@ -247,16 +250,15 @@ export class MeetingService implements IMeetingService {
           m.endAt
         );
       }
-      
+
       if (meetingSameTime) {
         throw new NotAcceptableException(
-          `It was not possible to schedule the meeting from ${this.formatDate(
-            startAt
-          )} to ${this.formatDate(endAt)}` +
-            ` because you already has a meeting scheduled` +
-            ` from ${this.formatDate(m.startAt)} to ${this.formatDate(
-              m.endAt
-            )}.`
+          ERROR_MESSAGES.CUSTOMER_MEETING_TIME_CONFLICT({
+            startAt: this.formatDate(startAt),
+            endAt: this.formatDate(endAt),
+            meetingStar: this.formatDate(m.startAt),
+            meetingEnd: this.formatDate(m.endAt),
+          })
         );
       }
     });
@@ -274,7 +276,7 @@ export class MeetingService implements IMeetingService {
     const valid = timeDifference >= thirtyMinutes && timeDifference <= twoHours;
 
     if (!valid) {
-      throw new NotAcceptableException("Meeting time is invalid.");
+      throw new NotAcceptableException(ERROR_MESSAGES.INVALID_MEETING_TIME);
     }
   }
 

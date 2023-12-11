@@ -9,7 +9,7 @@ export class TokenServiceMock implements ITokenService {
   }
   validateToken(token: string): ExtractedTokenPayload {
     return {
-      payload: { name: "teste", email: "teste@email.com", role: "Customer" },
+      payload: { idUser: 1, name: "teste", email: "teste@email.com", role: "Customer" },
       iat: 1702031385,
       exp: 1702049385,
     };

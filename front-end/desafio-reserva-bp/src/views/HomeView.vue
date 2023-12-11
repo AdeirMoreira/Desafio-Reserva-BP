@@ -107,7 +107,7 @@ export default {
         this.meeting.startAt = meeting.startAt
         this.meeting.endAt = meeting.endAt
 
-        this.popupAction = 'Editar reunão marcada'
+        this.popupAction = 'Editar reunião marcada'
       }
 
       this.popupMeeting = true
@@ -132,7 +132,7 @@ export default {
         }
       }
 
-      if (this.popupAction === 'Editar reunão marcada') {
+      if (this.popupAction === 'Editar reunião marcada') {
         const url = ENDPOINTS.UPDATE_MEETING(this.meeting.idMeeting as number)
 
         this.$vs.loading()

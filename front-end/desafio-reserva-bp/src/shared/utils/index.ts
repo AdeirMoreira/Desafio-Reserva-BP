@@ -1,7 +1,3 @@
-import { Portuguese } from 'flatpickr/dist/l10n/pt.js'
-
-
-
 function notify(object: any, title: string,  text: string, color: string) {
     object.notify({
         position: "top-center",

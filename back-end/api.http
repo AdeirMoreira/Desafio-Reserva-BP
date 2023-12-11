@@ -16,10 +16,10 @@ POST http://localhost:3003/user
 Content-Type: application/json 
 
 {
-    "name": "adm",
-    "email": "adm@email.com",
-    "password": "senhadoadm",
-    "role": "Adm"
+    "name": "Darmstadio",
+    "email": "darmstadio@email.com",
+    "password": "senhadodam",
+    "role": "Customer"
 }
 
 ### Get usert
@@ -31,12 +31,12 @@ GET http://localhost:3003/user/broker/2
 Authorization: {{accessToken}}
 
 ### Get Costumer
-GET http://localhost:3003/user/customer/3
+GET http://localhost:3003/user/customer/1
 Authorization: {{accessToken}}
 
 
 ### Update User
-PATCH  http://localhost:3003/user/2
+PATCH  http://localhost:3003/user/5
 Authorization: {{accessToken}}
 Content-Type: application/json 
 
@@ -69,7 +69,7 @@ Content-Type: application/json
 
 {
     "idBroker": 2,
-    "idCustomer": 3,
+    "idCustomer": 5,
     "startAt": "2023-12-03T15:40:12",
     "endAt": "2023-12-03T16:20:12"
 }
