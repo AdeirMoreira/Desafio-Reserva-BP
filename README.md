@@ -7,8 +7,8 @@ ou desmarcar suas reniões marcadas. No Back-End, foi uma API NodeJS e typescrip
 ## Screenshots do site 📸
 
 <p  align="center">
-    <img src="https://github.com/AdeirMoreira/Fullstack-Afiliados/assets/98994187/4d9d6700-3cf6-492f-80dc-61d710ebd2ab" width="300" height="200">
-    <img src="https://github.com/AdeirMoreira/Fullstack-Afiliados/assets/98994187/99aabf94-9199-4451-83bd-cfb3f931b612" width="300" height="200">
+    <img src="" width="300" height="200">
+    <img src="" width="300" height="200">
 <p/>
 
 ## Tecnologias 🛠
@@ -54,18 +54,15 @@ A primeira tela é a de login, ao digitar um email e uma senha são exibidos men
 encaminhando o usuario para tela principal. Há um link na tela de login para encaminhar o usuário para a tela de cadastro. No formulário há validações nos campos email, que deve ser único, e senha, 
 que deve conter pelo menos 8 caracteres. O usuário criado pode ser Corretor ou Cliente, Caso esse usuário seja um corretor, este poderá ver suas reuniões agendadas por meio de uma tabela com informações
 de data e hora de início e fim da reunião e do nome do cliente que marcou aquela reunião com aquele corretor. Caso o usuário seja um cliente, além de ver as reunuões que agendou, poderá agendar e editar reuniões 
-com os corretores, além de desmarcalas. Além dos sitemas de login e agendamento de reuniões, a aplicação Vue implmenta gerenciamento de estado por meio da biblioteca Pinia.
+com os corretores, por meio de um modal no qual o cliente deve selecionar o corretor, a data e hora de inicio e fim da reunião, o cliente também pode desmarcar a reunião. Além dos sistemas de login e agendamento de reuniões, a aplicação Vue implmenta gerenciamento de estado por meio da biblioteca Pinia.
 
 #### back-end
 
-A api foi desenvolvida com nodeJs e typescript seguindo o padrão e projeto 'Feature by Package' e conceitos fortemente inspirados no framework NestJS. Possui as camadas controladores, serviços e repositorios. As rotas 
-requerem autenticação por token obtido por meio do login e autorização por tipo de usupário. Todos os dados recebidos por cada endpoint são validados em DTOs com a biblioteca class-validator e os erros são tratados em uma 
-camada superior e retornam mensagens amigaveis. Existem 3 modutos Autenticação(Auth), Usuários(Users) e Reuniões(Meetings). O módulo de autenticação realiza a emisão e verificação de token Jwt e o controle de acesso 
-a rotas baseadas no tipo de usuário. No módulo de usuários, podemos fazer a leitura, criação, edição e exclusão dos dados. No momento da criação dos usuarios é feita a vericação da condição de email único, além de fazer 
-um hash da senha do usuarios antes de salva-la no banco de dados para maior segunraça. No módulo de Reuniões também podemos fazer um crud dos dados. Há varios tipos de valições antes de se fazer a inseção, como verificação
-da condição da reunião ter entre 30 munutos e 2 horas, verificação a existencia do corredor e do cliente. Há também validção se não há conflito de agenda tanto do corretor quanto do cliente para se evitar que o horário uma reunião
-não ocupe o horário de outra. A manipulação do banco de dados foi feita atraves do framework TypeORM em uma camada de repositório. Também foi implementado sistema de migrações para maior controle das alteraões no banco de dados.
-Há também teste unitários com biblioteca Jest. A Api foi documetada com Swagger disponivel por meio da hora '/api-docs'.
+A api foi desenvolvida com nodeJs e typescript seguindo o padrão de projeto 'Feature by Package' e conceitos fortemente inspirados no framework NestJS. Possui as camadas controladores, serviços e repositorios. As rotas 
+requerem autenticação por token obtido por meio do login e autorização por tipo de usupário. Todos os dados recebidos por cada endpoint são validados em DTOs com a biblioteca class-validator e os erros são tratados em uma camada superior e retornam mensagens amigaveis. Existem 3 modulos Autenticação(Auth), Usuários(Users) e Reuniões(Meetings). O módulo de autenticação realiza a emisão e verificação de token Jwt e o controle de acesso 
+a rotas baseadas no tipo de usuário. No módulo de usuários, podemos fazer a leitura, criação, edição e exclusão dos dados. No momento da criação dos usuários é feita a vericação da condição de email único, além de fazer 
+um hash da senha do usuário antes de salva-la no banco de dados para maior segunraça. No módulo de Reuniões também podemos fazer um crud dos dados. Há varios tipos de valições antes de se fazer a inseção, como a  verificação
+da condição da reunião ter entre 30 munutos e 2 horas, verificação a existencia do corredor e do cliente. Há também validção se não há conflito de agenda tanto do corretor quanto do cliente para se evitar que o horário uma reunião não ocupe o horário de outra. A manipulação do banco de dados foi feita atraves do framework TypeORM em uma camada de repositório. Também foi implementado sistema de migrações para maior controle das alteraões no banco de dados. Há também teste unitários com biblioteca Jest. A Api foi documetada com Swagger disponivel por meio da hora '/api-docs'.
 
 ## Rodando o projeto 🔛
 #### 1️⃣ Clonar e abrir
