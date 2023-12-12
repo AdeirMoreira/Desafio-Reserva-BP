@@ -12,6 +12,10 @@ ou desmarcar suas reniões marcadas. No Back-End, foi uma API NodeJS e typescrip
     <img src="https://github.com/AdeirMoreira/Desafio-Reserva-BP/assets/98994187/62c6e369-105f-4edf-a244-de18fe9692f5" width="600" height="250">
 <p/>
 
+## Apresentação 🎞
+
+- [Link do video de apresentação](https://www.loom.com/share/09a34c85d46949119ae62bfdd45607ab)
+
 ## Tecnologias 🛠
 
 #### Front-end

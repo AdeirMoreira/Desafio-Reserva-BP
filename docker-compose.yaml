@@ -38,6 +38,7 @@ services:
       bash -c "chmod +x .docker/wait-for-it.sh && ./.docker/wait-for-it.sh db:3306 -t 120 -- chmod +x .docker/entrypoint.sh && ./.docker/entrypoint.sh"
 
   web:
+    container_name: vue3
     build:
       context: ./front-end
     ports:
