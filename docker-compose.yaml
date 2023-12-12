@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -15,7 +15,6 @@ services:
       - ${DB_PORT}:3306
     volumes:
       - ./back-end/.docker/dbdata:/var/lib/mysql
-    
 
   api:
     build: ./back-end
@@ -39,15 +38,8 @@ services:
       bash -c "chmod +x .docker/wait-for-it.sh && ./.docker/wait-for-it.sh db:3306 -t 120 -- chmod +x .docker/entrypoint.sh && ./.docker/entrypoint.sh"
 
   web:
-    build: ./front-end
-    container_name: vue-app
-    environment:
-      - VUE_APP_API_BASE_URL=${VUE_APP_API_BASE_URL}
+    build:
+      context: ./front-end
     ports:
-      - 5173:5173
-    volumes:
-      - ./front-end:/home/node/app
-    command: >
-      bash -c "chmod +x .docker/entrypoint.sh && ./.docker/entrypoint.sh"
-    depends_on:
-      - api
+      - "5173:5173"
+    entrypoint: .docker/entrypoint.sh

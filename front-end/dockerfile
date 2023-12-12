@@ -3,4 +3,20 @@ FROM node:20-slim
 # Defina a pasta de trabalho para a aplicação
 WORKDIR /home/node/app
 
-CMD [ "/home/node/app/.docker/entrypoint.sh" ] 
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies
+# Copy the local project files to the working directory
+COPY . .
+
+# Copy entrypoint.sh from .docker folder and give execution permissions
+COPY .docker/entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
+# Expose the port that the app will run on
+EXPOSE 5173
+
+# Set the entrypoint
+ENTRYPOINT [ "./entrypoint.sh" ]
+

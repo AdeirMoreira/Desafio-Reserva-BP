@@ -86,7 +86,8 @@ o container da api começará a instalar as dependencias e logo em seguida rodar
 
 Quando essas duas mensagens aparecerem no terminal, o projeto estará pronto para ser usado.
 ```
-
+➜  Local:   http://localhost:5173/
+➜  Network: http://172.23.0.2:5173/
 ```
 ``` 
 Server is running in http://localhost:3003
